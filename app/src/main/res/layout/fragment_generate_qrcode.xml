@@ -1,0 +1,65 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_large"
+    tools:context="com.company.zicure.payment.fragment.GenerateQRCodeFragment">
+
+    <TextView
+        android:id="@+id/time_refresh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:drawableLeft="@drawable/ic_sync_black"
+        android:drawableTint="@color/colorGrayCorner"
+        android:textSize="@dimen/size_text_small"
+        android:paddingTop="@dimen/padding_small"
+        android:paddingBottom="@dimen/padding_small"
+        android:layout_centerHorizontal="true"
+        android:text="รีเฟรช 01.00"/>
+
+    <ImageView
+        android:id="@+id/img_qrcode"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/time_refresh"
+        android:layout_margin="@dimen/padding_large"
+        android:scaleType="centerInside"
+        android:background="@android:color/transparent"
+        android:layout_above="@+id/layout_amount_cash"/>
+
+    <LinearLayout
+        android:id="@+id/layout_amount_cash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/amount_cash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0.00"
+            android:gravity="end"
+            android:textColor="@android:color/black"
+            android:paddingTop="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_small"
+            android:textSize="@dimen/size_text_large"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="฿"
+            android:gravity="end"
+            android:textColor="@android:color/black"
+            android:paddingTop="@dimen/padding_small"
+            android:paddingBottom="@dimen/padding_small"
+            android:textSize="@dimen/size_text_large"
+            />
+
+    </LinearLayout>
+
+
+</RelativeLayout>

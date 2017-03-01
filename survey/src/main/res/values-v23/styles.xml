@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="BaseDrawable">
+        <item name="android:drawableTint">@android:color/white</item>
+        <item name="android:paddingTop">50dp</item>
+    </style>
+
+
+</resources>

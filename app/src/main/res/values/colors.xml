@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#034C64</color>
+    <color name="colorAccent">#4793CD</color>
+
+    <color name="transparent">#00000000</color>
+
+    <color name="colorGreenNormal">#0aa900</color>
+    <color name="colorGreenGradient">#40bc3a</color>
+    <color name="colorGreenPress">#055800</color>
+
+    <color name="colorGrayCorner">#E0E0E0</color>
+    <color name="colorGrayBg">#F5F5F5</color>
+    <color name="colorGrayLine">#E0E0E0</color>
+    <color name="colorBackgroundGray">#F5F5F5</color>
+
+    <color name="text_link">#ff6c00</color>
+    <color name="text_link_highlight">#ffcc00</color>
+
+    <color name="color_news">#9fa7a7</color>
+    <color name="color_news_press">#7A8989</color>
+    <color name="color_news_gradient">#D7D9D9</color>
+
+    <color name="colorRedNormal">#ff000b</color>
+    <color name="colorRedPress">#910006</color>
+    <color name="colorRedGradient">#ff313b</color>
+
+    <color name="colorBlueStrongNormal">#1976D2</color>
+    <color name="colorBlueStrongPress">#0D47A1</color>
+    <color name="colorBlueStrongGradient">#42A5F5</color>
+
+    <color name="colorBlueNormal">#00BCD4</color>
+    <color name="colorBluePress">#0097A7</color>
+    <color name="colorBlueGradient">#80DEEA</color>
+
+
+    <color name="color_dot_active">#ffffff</color>
+    <color name="color_dot_inactive">#616161</color>
+
+    <color name="color_text">#8bc24c</color>
+
+    <color name="color_bg">#e4e4e4</color>
+
+</resources>

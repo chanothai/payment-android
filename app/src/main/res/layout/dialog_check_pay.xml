@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingStart="40dp"
+    android:paddingEnd="40dp"
+    android:paddingTop="24dp"
+    android:paddingBottom="24dp">
+
+    <TextView
+        android:id="@+id/title_receiver"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_text_large"
+        android:textColor="@android:color/black"
+        android:gravity="start"
+        android:layout_marginBottom="24dp"
+        android:text="Hello world"/>
+
+    <TextView
+        android:id="@+id/title_detail_receive"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="@dimen/size_text_medium"
+        android:textColor="@android:color/darker_gray"
+        android:gravity="start"
+        android:layout_marginBottom="24dp"
+        android:text="Hello world"/>
+
+    <TextView
+        android:id="@+id/amount_cash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/size_text_fixed"
+        android:gravity="center"
+        android:text="35 ฿"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_medium"
+            android:text="@string/btn_cancel_th"
+            android:textColor="@color/colorBlueStrongNormal"
+            android:background="@android:color/transparent"/>
+
+        <Button
+            android:id="@+id/btn_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_medium"
+            android:text="@string/btn_confirm_th"
+            android:textColor="@color/colorBlueStrongNormal"
+            android:background="@android:color/transparent"/>
+
+    </LinearLayout>
+
+</LinearLayout>

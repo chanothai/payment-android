@@ -1,0 +1,54 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1.2"
+    tools:context="com.company.zicure.payment.fragment.MainPayFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:paddingTop="@dimen/padding_small"
+        android:paddingBottom="@dimen/padding_very_large"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_pay_cash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            style="@style/BaseDrawable"
+            android:gravity="center|top"
+            android:drawableTop="@drawable/ic_scan_qrcode"
+            android:text="@string/pay_cash"
+            android:textSize="@dimen/size_text_fixed"
+            android:textColor="@android:color/white"
+            android:background="@drawable/select_btn_blue"/>
+
+        <View
+            android:layout_width="@dimen/padding_small"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"/>
+        <Button
+            android:id="@+id/btn_receive_cash"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textSize="@dimen/size_text_fixed"
+            android:drawableTop="@drawable/ic_receive_qrcode"
+            android:text="@string/receive_cash"
+            style="@style/BaseDrawable"
+            android:gravity="center|top"
+            android:textColor="@android:color/white"
+            android:background="@drawable/select_btn_blue_strong"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+    <include
+        android:layout_width="@dimen/size_image_circle"
+        android:layout_height="@dimen/size_image_circle"
+        layout="@layout/content_circle_image"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>

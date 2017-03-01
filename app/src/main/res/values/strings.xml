@@ -1,0 +1,45 @@
+<resources>
+    <string name="app_name">Payment</string>
+
+    //Form text pay
+    <string name="balance">เหลือ</string>
+    <string name="amount_pay">จำนวนเงิน</string>
+    <string name="pay_cash">จ่าย</string>
+    <string name="receive_cash">รับ</string>
+    <string name="record_spending">ประวัติการใช้จ่าย</string>
+    <string name="pay_complete">จ่ายเงินเรียบร้อย</string>
+    <string name="receive_complete">รับเงินเรียบร้อย</string>
+
+
+    //Another text
+    <string name="action_setings">Setting</string>
+    <string name="dialog_loading">Loading</string>
+    <string name="refresh">รีเฟรช</string>
+    <string name="complete">เรียบร้อย</string>
+
+    //URL_SERVER
+    <string name="url_server">http://e-payment.gconnect-th.com/</string>
+    <!--<string name="url_server">http://180.180.244.228:9005/</string>-->
+    //URL_PATH
+    <string name="path_qrcode">e-money-client/Buyers/QRcode/</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    //Tag Fragment
+    <string name="tagScanQRFragment">scan_qr_fragment</string>
+    <string name="cash_thai">฿</string>
+    <string name="account1">000000000000000001</string>
+    <string name="account2">000000000000000002</string>
+    <string name="account3">000000000000000003</string>
+    <string name="tag_pay">pay</string>
+    <string name="tag_receive">receive</string>
+    <string name="history">รับ-จ่ายล่าสุด</string>
+    <string name="tagMainPayFragment">main_pay_fragment</string>
+    <string name="txt_survey">ให้คะแนน ></string>
+    <string name="head_restaurant">"ร้าน "</string>
+    <string name="btn_cancel_th">ยกเลิก</string>
+    <string name="content_scan_th">สแกน QR ของ MOF PAY ที่ต้องการชำระเงิน</string>
+    <string name="content_receive_cash_th">รับเงินระหว่างบัญชี Wallet</string>
+    <string name="content_dialog_th">คุณต้องการชำระเงินผ่าน MOF PAY?</string>
+</resources>

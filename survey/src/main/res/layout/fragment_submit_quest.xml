@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.company.zicure.survey.fragment.SubmitQuestFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <LinearLayout
+        android:id="@+id/layout_complete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/topic_complete_assessment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:textSize="@dimen/size_text_large"
+            style="@style/BaseFont"
+            android:text="@string/btn_complete_th" />
+
+        <TextView
+            android:id="@+id/content_complete_assessment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal"
+            android:padding="@dimen/padding_large"
+            android:textSize="@dimen/size_text_small"
+            android:textColor="@android:color/darker_gray"
+            android:text="@string/content_complete_th" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_submit"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_above="@+id/layout_complete"
+        android:layout_centerHorizontal="true"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/size_text_medium"
+        android:background="@drawable/select_btn_receive"
+        android:text="@string/btn_confirm_th"
+        />
+
+
+</RelativeLayout>

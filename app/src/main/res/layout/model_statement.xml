@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/padding_medium"
+    android:background="?android:attr/selectableItemBackground">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <include
+                android:layout_width="@dimen/size_image_circle_small"
+                android:layout_height="@dimen/size_image_circle_small"
+                layout="@layout/content_circle_image" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_weight="1">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/statement_date"
+                android:text="เมื่อวานนี้"
+                android:gravity="end"
+                android:textSize="@dimen/size_text_small"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/statement_cash"
+                android:text="+ 200.00 ฿"
+                android:textColor="@color/colorBlueStrongNormal"
+                android:gravity="end"
+                android:textSize="@dimen/size_text_small"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/statement_point"
+                android:text="ให้คะแนน >"
+                android:visibility="gone"
+                android:gravity="end"
+                android:textSize="@dimen/size_text_small"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</RelativeLayout>

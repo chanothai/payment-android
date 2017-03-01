@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_image_circle_small">100dp</dimen>
+    <dimen name="size_image_circle">200dp</dimen>
+    <dimen name="size_text_fixed">72sp</dimen>
+
+    <dimen name="padding_small">8dp</dimen>
+    <dimen name="padding_medium">16dp</dimen>
+    <dimen name="padding_large">24dp</dimen>
+    <dimen name="padding_very_large">48dp</dimen>
+
+    <dimen name="size_text_small">32sp</dimen>
+    <dimen name="size_text_medium">44sp</dimen>
+    <dimen name="size_text_large">56sp</dimen>
+
+    <dimen name="margin_layout">200dp</dimen>
+</resources>

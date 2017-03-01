@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">Survey</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="url_question">http://e-payment.gconnect-th.com/</string>
+    <string name="dialog_loading">Loading</string>
+    <string name="btn_complete_th">เรียบร้อย</string>
+    <string name="btn_confirm_th">ยืนยัน</string>
+    <string name="content_complete_th">ขอบคุณสำหรับความคิดเห็น ทุกความคิดเห็นเรายินดีรับฟัง</string>
+    <string name="point_number">.</string>
+
+
+</resources>
