@@ -237,6 +237,7 @@ public class EmoQuestionFragment extends Fragment {
                     if (ModelCartSurvey.newInstance().getSerialized().questionResponse.getAssessmentTopic().get(0).getAssessmentQuestion().get(position).getAmResult() != null){
                         checkAnswerHasAlready(position, holder);
                     }else{
+                        checkAnswerHasAlready(position, holder);
                         checkAnswerOfChoice(position, holder);
                     }
                 }catch (NullPointerException e){

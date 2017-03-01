@@ -71,7 +71,7 @@ public class SurveyActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
-//        setViewPager();
+
     }
 
     private void bindView() {
@@ -158,6 +158,8 @@ public class SurveyActivity extends BaseActivity implements View.OnClickListener
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //Clear answer assessment
+        ModelCartSurvey.newInstance().getSerialized().answerRequest = new AnswerRequest();
         EventBusCart.getInstance().getEventBus().unregister(this);
     }
 
@@ -170,7 +172,6 @@ public class SurveyActivity extends BaseActivity implements View.OnClickListener
 
     @Override
     public void onPageSelected(int position) {
-//        validateData(position);
         addDotLayout(position);
     }
 
@@ -183,8 +184,5 @@ public class SurveyActivity extends BaseActivity implements View.OnClickListener
     public void onBackPressed() {
         super.onBackPressed();
         overridePendingTransition(R.anim.anim_slide_in_right, R.anim.anim_slide_out_right);
-
-        //Clear answer assessment
-        ModelCartSurvey.newInstance().getSerialized().answerRequest = new AnswerRequest();
     }
 }
