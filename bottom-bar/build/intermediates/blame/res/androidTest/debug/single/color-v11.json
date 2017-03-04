@@ -1,10 +1,10 @@
 [
     {
         "merged": "C:\\AndroidProject\\PaymentApp\\Payment\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v11\\abc_background_cache_hint_selector_material_dark.xml",
-        "source": "C:\\AndroidProject\\PaymentApp\\Payment\\bottom-bar\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\color-v11\\abc_background_cache_hint_selector_material_dark.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\3d41b2de3d6a1beb3aca740b2b33ae3800089e4a\\output\\res\\color-v11\\abc_background_cache_hint_selector_material_dark.xml"
     },
     {
         "merged": "C:\\AndroidProject\\PaymentApp\\Payment\\bottom-bar\\build\\intermediates\\res\\merged\\androidTest\\debug\\color-v11\\abc_background_cache_hint_selector_material_light.xml",
-        "source": "C:\\AndroidProject\\PaymentApp\\Payment\\bottom-bar\\build\\intermediates\\exploded-aar\\com.android.support\\appcompat-v7\\25.0.1\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml"
+        "source": "C:\\Users\\4GRYZ52\\.android\\build-cache\\3d41b2de3d6a1beb3aca740b2b33ae3800089e4a\\output\\res\\color-v11\\abc_background_cache_hint_selector_material_light.xml"
     }
 ]

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#034C64</color>
-    <color name="colorAccent">#4793CD</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#EC407A</color>
 
     <color name="transparent">#00000000</color>
 
@@ -26,9 +26,9 @@
     <color name="colorRedPress">#910006</color>
     <color name="colorRedGradient">#ff313b</color>
 
-    <color name="colorBlueStrongNormal">#1976D2</color>
-    <color name="colorBlueStrongPress">#0D47A1</color>
-    <color name="colorBlueStrongGradient">#42A5F5</color>
+    <color name="colorBlueStrongNormal">#1E88E5</color>
+    <color name="colorBlueStrongPress">#1565C0</color>
+    <color name="colorBlueStrongGradient">#64B5F6</color>
 
     <color name="colorBlueNormal">#00BCD4</color>
     <color name="colorBluePress">#0097A7</color>

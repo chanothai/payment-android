@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_profile"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="@dimen/padding_medium"
-    android:background="@android:color/white"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
     tools:context="com.company.zicure.payment.activity.ProfileActivity">
+    
 
     <include
         android:id="@+id/img_profile"
@@ -27,4 +25,4 @@
         android:layout_weight="1.2"
         android:id="@+id/qr_profile"/>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

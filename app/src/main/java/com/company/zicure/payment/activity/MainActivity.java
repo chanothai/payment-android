@@ -2,15 +2,20 @@ package com.company.zicure.payment.activity;
 
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
+import android.support.design.widget.AppBarLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,6 +48,8 @@ public class MainActivity extends BaseActivity {
     TextView amountCash;
 
     //Toolbar
+    @Bind(R.id.appbarLayout)
+    AppBarLayout appBarLayout;
     @Bind(R.id.toolbar)
     Toolbar toolbarMenu;
     @Bind(R.id.title_toolbar)
@@ -73,11 +80,31 @@ public class MainActivity extends BaseActivity {
     }
 
     private void setToolbar(){
+        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
+        params.height = getActionBarHeight() + getStatusBarHeight() + 10;
+        appBarLayout.setLayoutParams(params);
         toolbarMenu.setTitle("");
+        toolbarMenu.setPadding(0, getStatusBarHeight() + 10 , 0,0);
         titleToolbar.setText("MOF PAY");
         setSupportActionBar(toolbarMenu);
+    }
 
-        setLogoAnimation();
+    private int getActionBarHeight(){
+        int actionBarHeight = 0;
+        final TypedArray styleAttributes = getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
+        actionBarHeight = (int) styleAttributes.getDimension(0,0);
+        styleAttributes.recycle();
+
+        return actionBarHeight;
+    }
+
+    private int getStatusBarHeight(){
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0){
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
     }
 
     private void setLogoAnimation(){
@@ -233,13 +260,11 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        rotationLogo.start();
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        rotationLogo.end();
     }
 
     @Override

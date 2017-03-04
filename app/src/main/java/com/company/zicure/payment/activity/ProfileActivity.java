@@ -27,7 +27,6 @@ public class ProfileActivity extends BaseActivity {
 
     @Bind(R.id.img_profile)
     CircleImageView imgProfile;
-    @Bind(R.id.qr_profile)
     ImageView qrProfile;
     @Bind(R.id.layout_profile)
     LinearLayout layoutProfile;
