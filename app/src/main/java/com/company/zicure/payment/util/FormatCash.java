@@ -11,7 +11,7 @@ public class FormatCash {
     private DecimalFormat formatter = null;
 
     public FormatCash(){
-        formatter = new DecimalFormat("#,###.00");
+        formatter = new DecimalFormat("#,###,###.00");
     }
     public static FormatCash newInstance(){
         if (me == null){

@@ -42,4 +42,7 @@
 
     <color name="color_bg">#e4e4e4</color>
 
+    <color name="tab_interActive">#F8BBD0</color>
+    <color name="tab_active">#EC407A</color>
+
 </resources>

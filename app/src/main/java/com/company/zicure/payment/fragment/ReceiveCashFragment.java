@@ -2,50 +2,42 @@ package com.company.zicure.payment.fragment;
 
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
+import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.EditText;
-import android.widget.TextView;
+import android.view.ViewTreeObserver;
+import android.widget.RelativeLayout;
 
-import com.company.zicure.payment.activity.MainActivity;
+
 import com.company.zicure.payment.R;
-import com.company.zicure.payment.network.ClientHttp;
-import com.company.zicure.payment.util.ModelCart;
-
-import de.hdodenhof.circleimageview.CircleImageView;
+import com.company.zicure.payment.adapters.ViewPagerReceiveCashAdapter;
 
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link ReceiveCashFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ReceiveCashFragment extends Fragment implements View.OnFocusChangeListener, TextWatcher, EditText.OnEditorActionListener{
+public class ReceiveCashFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
+    //View
+    private ViewPager pagerReceiveCash = null;
+    private TabLayout tabChooseReceiveCash = null;
+
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
-    //
-    private CircleImageView imgPayer = null;
-    private CircleImageView imgReceiver = null;
-
-    //View
-    private EditText inputCash = null;
-
-    private InputMethodManager keySoft = null;
+    private int screenHeight = 0;
 
     public ReceiveCashFragment() {
         // Required empty public constructor
@@ -83,81 +75,44 @@ public class ReceiveCashFragment extends Fragment implements View.OnFocusChangeL
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_receive_cash, container, false);
-        inputCash = (EditText) root.findViewById(R.id.edit_amount_pay);
-        imgPayer = (CircleImageView) root.findViewById(R.id.img_payment);
-        imgReceiver = (CircleImageView) root.findViewById(R.id.img_receiver);
+        pagerReceiveCash = (ViewPager) root.findViewById(R.id.view_pager_receive_cash);
+        tabChooseReceiveCash = (TabLayout) root.findViewById(R.id.tab_choose_receive_cash);
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        inputCash.addTextChangedListener(this);
-        inputCash.setOnFocusChangeListener(this);
-        inputCash.requestFocus();
-        inputCash.setOnEditorActionListener(this);
-
-        keySoft = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-
         if (savedInstanceState == null){
-            openKeyBoard();
-            if (ModelCart.getInstance().getModel().accountUserModel.accountNo.equalsIgnoreCase(getString(R.string.account2))){
-                imgReceiver.setImageResource(R.drawable.yajai);
-            }
-            else if (ModelCart.getInstance().getModel().accountUserModel.accountNo.equalsIgnoreCase(getString(R.string.account1))){
-                imgReceiver.setImageResource(R.drawable.base);
-            }
+            setupViewPager(pagerReceiveCash);
+            tabChooseReceiveCash.setupWithViewPager(pagerReceiveCash);
+            resizeView();
         }
     }
 
-    @Override
-    public void onFocusChange(View view, boolean hasFocus) {
-        if (hasFocus){
-
-        }
+    private void setupViewPager(ViewPager viewPager){
+        ViewPagerReceiveCashAdapter adapter = new ViewPagerReceiveCashAdapter(getChildFragmentManager());
+        adapter.addFragment(new ReceiveCashWalletFragment(), getString(R.string.txt_wallet));
+        adapter.addFragment(new ReceiveCashQrCardFragment(), getString(R.string.txt_qrcard));
+        viewPager.setAdapter(adapter);
     }
 
-
-    //Text watcher
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence charSequence, final int position, int i1, int i2) {
-
-    }
-
-    @Override
-    public void afterTextChanged(Editable editable) {
-    }
-
-    @Override
-    public boolean onEditorAction(TextView textView, int actionId, KeyEvent keyEvent) {
-        if (actionId == EditorInfo.IME_ACTION_NEXT){
-//            Toast.makeText(getActivity(), textView.getText().toString() , Toast.LENGTH_SHORT).show();
-            if (!inputCash.getText().toString().trim().isEmpty()){
-                ((MainActivity)getActivity()).showLoadingDialog();
-                ModelCart.getInstance().getModel().accountUserModel.amount = Double.parseDouble(inputCash.getText().toString().trim());
-                ClientHttp.getInstance(getActivity()).requestPay(ModelCart.getInstance().getModel().accountUserModel);
-                closeKeyBoard();
+    private void resizeView(){
+        screenHeight = pagerReceiveCash.getRootView().getHeight();
+        pagerReceiveCash.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect rect = new Rect();
+                pagerReceiveCash.getWindowVisibleDisplayFrame(rect);
+                if (screenHeight >= rect.bottom){
+                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pagerReceiveCash.getLayoutParams();
+                    screenHeight = ((rect.bottom - rect.right));
+                    params.height = screenHeight;
+                    pagerReceiveCash.setLayoutParams(params);
+                }
             }
-        }
-        return false;
+        });
     }
 
-    private void openKeyBoard(){
-        keySoft.showSoftInput(inputCash, InputMethodManager.SHOW_IMPLICIT);
-    }
 
-    private void closeKeyBoard(){
-        keySoft.hideSoftInputFromWindow(inputCash.getWindowToken(), 0);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        closeKeyBoard();
-
-    }
 }

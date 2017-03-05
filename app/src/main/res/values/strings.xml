@@ -42,4 +42,7 @@
     <string name="content_scan_th">สแกน QR ของ MOF PAY ที่ต้องการชำระเงิน</string>
     <string name="content_receive_cash_th">รับเงินระหว่างบัญชี Wallet</string>
     <string name="content_dialog_th">คุณต้องการชำระเงินผ่าน MOF PAY?</string>
+    <string name="receive_cash_qrcard_th">รับเงินผ่าน QR Card</string>
+    <string name="txt_wallet">Wallet</string>
+    <string name="txt_qrcard">QR Card</string>
 </resources>

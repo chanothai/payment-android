@@ -212,14 +212,19 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe
     public void onEvent(ResponseQRCode qrCode){
-        ResponseQRCode.Result result = qrCode.getResult();
-        //Store Data
-        ModelCart.getInstance().getModel().qrCodeModel.qrcode = result.getUrlQRCode();
+        try{
+            ResponseQRCode.Result result = qrCode.getResult();
+            //Store Data
+            ModelCart.getInstance().getModel().qrCodeModel.qrcode = result.getUrlQRCode();
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, GenerateQRCodeFragment.newInstance(String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount),result.getUrlQRCode()));
-        transaction.addToBackStack(null);
-        transaction.commit();
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, GenerateQRCodeFragment.newInstance(String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount),result.getUrlQRCode()));
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+            Toast.makeText(this, "code null", Toast.LENGTH_SHORT).show();
+        }
 
         dismissDialog();
     }

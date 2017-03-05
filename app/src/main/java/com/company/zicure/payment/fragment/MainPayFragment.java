@@ -3,8 +3,6 @@ package com.company.zicure.payment.fragment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,9 +12,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableString;
-import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,18 +19,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.company.zicure.payment.activity.MainActivity;
-import com.company.zicure.payment.activity.ProfileActivity;
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.adapters.StatementAdapter;
-import com.company.zicure.payment.common.BaseActivity;
 import com.company.zicure.payment.interfaces.ItemClickListener;
 import com.company.zicure.payment.model.AccountUserModel;
 import com.company.zicure.payment.model.RequestTokenModel;
 import com.company.zicure.payment.model.ResponseStatement;
-import com.company.zicure.payment.model.ResponseTokenModel;
 import com.company.zicure.payment.network.ClientHttp;
 import com.company.zicure.payment.util.FormatCash;
 import com.company.zicure.payment.util.ModelCart;
@@ -48,6 +39,7 @@ import com.google.gson.Gson;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
 
 
 /**
