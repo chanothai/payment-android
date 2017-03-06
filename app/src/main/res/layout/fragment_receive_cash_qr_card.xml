@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorGrayBg">
+
+    <RelativeLayout
+        android:id="@+id/content_receive_cash_wallet"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom">
+
+        <LinearLayout
+            android:id="@+id/layout_input_cash"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium"
+            android:gravity="top">
+
+            <LinearLayout
+                android:id="@+id/content_img"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center"
+                android:padding="@dimen/padding_large">
+
+                <include
+                    android:id="@+id/img_payment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    layout="@layout/content_circle_image"/>
+
+                <ImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/ic_forward"
+                    android:scaleType="centerInside"
+                    android:tint="@android:color/darker_gray"/>
+
+                <include
+                    android:id="@+id/img_receiver"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    layout="@layout/content_circle_image"/>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/title_receive_cash"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                style="@style/BaseFont"
+                android:gravity="center"
+                android:text="@string/receive_cash_qrcard_th"/>
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="@dimen/padding_small">
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_amount_pay"
+                    android:inputType="numberDecimal"
+                    android:hint="@string/amount_pay"
+                    android:gravity="end"
+                    android:digits="0123456789."
+                    android:imeOptions="actionNext"
+                    android:textSize="@dimen/size_text_medium"
+                    android:padding="@dimen/padding_large"/>
+            </android.support.design.widget.TextInputLayout>
+
+        </LinearLayout>
+    </RelativeLayout>
+</RelativeLayout>
