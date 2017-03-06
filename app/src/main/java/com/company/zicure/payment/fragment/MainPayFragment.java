@@ -156,7 +156,7 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
                 ModelCart.getInstance().getModel().accountUserModel.type = getString(R.string.tag_pay);
                 fragment = new PayCashFragment();
                 transaction.replace(R.id.container, fragment,getString(R.string.tagScanQRFragment));
-                transaction.addToBackStack(getString(R.string.tag_receive));
+                transaction.addToBackStack(getString(R.string.tag_pay));
                 transaction.commit();
 
                 break;
@@ -164,7 +164,7 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
                 ModelCart.getInstance().getModel().accountUserModel.type = getString(R.string.tag_receive);
                 fragment = new ReceiveCashFragment();
                 transaction.replace(R.id.container, fragment);
-                transaction.addToBackStack(getString(R.string.tag_pay));
+                transaction.addToBackStack(getString(R.string.tag_receive));
                 transaction.commit();
 
                 break;

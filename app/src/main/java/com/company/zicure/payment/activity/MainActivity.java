@@ -6,6 +6,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.company.zicure.payment.fragment.GenerateQRCodeFragment;
 import com.company.zicure.payment.fragment.MainPayFragment;
 import com.company.zicure.payment.fragment.PayResultFragment;
 import com.company.zicure.payment.fragment.PayCashFragment;
+import com.company.zicure.payment.fragment.ReceiveCashFragment;
 import com.company.zicure.payment.model.RequestTokenModel;
 import com.company.zicure.payment.model.ResponseBalance;
 import com.company.zicure.payment.model.ResponseQRCode;
@@ -74,8 +76,6 @@ public class MainActivity extends BaseActivity {
             accountUser = getString(R.string.account2);
             setToolbar();
             getFirstToken();
-
-
         }
     }
 
@@ -123,13 +123,20 @@ public class MainActivity extends BaseActivity {
         ClientHttp.getInstance(this).userCallToken(tokenModelBuyer);
     }
 
-    public void setFragmentLayout(){
+    public void callMainPayFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, MainPayFragment.newInstance(accountUser, getModel().accountUserModel.token),getString(R.string.tagMainPayFragment));
         transaction.commit();
     }
 
-    public void setLayoutPayResult(){
+    public void callPayCashFragment(){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, PayCashFragment.newInstance("",""));
+        transaction.addToBackStack(getString(R.string.tag_receive_qr_card));
+        transaction.commit();
+    }
+
+    public void callPayResultFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, PayResultFragment.newInstance(getModel().accountUserModel.type, String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount)));
         transaction.addToBackStack(null);
@@ -194,7 +201,7 @@ public class MainActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onEvent(ResponseTokenModel tokenModel){
+    public void onEventReponseToken(ResponseTokenModel tokenModel){
         ResponseTokenModel.Result result = tokenModel.getResult();
 
         Log.d("Token", new Gson().toJson(tokenModel));
@@ -206,12 +213,12 @@ public class MainActivity extends BaseActivity {
             //get balance
             setBalance();
             //set first page
-            setFragmentLayout();
+            callMainPayFragment();
         }
     }
 
     @Subscribe
-    public void onEvent(ResponseQRCode qrCode){
+    public void onEventShowQR(ResponseQRCode qrCode){
         try{
             ResponseQRCode.Result result = qrCode.getResult();
             //Store Data
@@ -219,7 +226,7 @@ public class MainActivity extends BaseActivity {
 
             FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
             transaction.replace(R.id.container, GenerateQRCodeFragment.newInstance(String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount),result.getUrlQRCode()));
-            transaction.addToBackStack(null);
+            transaction.addToBackStack(getString(R.string.tag_show_qrcode));
             transaction.commit();
         }catch (NullPointerException e){
             e.printStackTrace();
@@ -230,11 +237,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onEvent(ResponseScanQR scanQR){
+    public void onEventScanQR(ResponseScanQR scanQR){
         ResponseScanQR.Result result = scanQR.getResult();
 
         if (result.getCode().equalsIgnoreCase("SUCCESS")){
-            setLayoutPayResult();
+            callPayResultFragment();
             Toast.makeText(getApplicationContext(), result.getCode(), Toast.LENGTH_SHORT).show();
             dismissDialog();
         }else{
@@ -273,25 +280,29 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-    }
-
-    @Override
     public void onBackPressed() {
         int count = getSupportFragmentManager().getBackStackEntryCount();
         if (count > 0){
             count--;
-            String tag = getSupportFragmentManager().getBackStackEntryAt(count).getName();
-            if (tag != null){
-                if (tag.equalsIgnoreCase(getString(R.string.tag_pay))){
-                    Toast.makeText(getApplicationContext(), tag, Toast.LENGTH_SHORT).show();
-                    super.onBackPressed();
+            try{
+                String tag = getSupportFragmentManager().getBackStackEntryAt(count).getName();
+                if (!tag.isEmpty()){
+                    if (tag.equalsIgnoreCase(getString(R.string.tag_pay))){
+                        super.onBackPressed();
+                    }
+                    else if (tag.equalsIgnoreCase(getString(R.string.tag_receive))){
+                        super.onBackPressed();
+                    }
+                    else if (tag.equalsIgnoreCase(getString(R.string.tag_receive_qr_card))){
+                        getSupportFragmentManager().popBackStack(getString(R.string.tag_receive_qr_card), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    }
+
+                    else if (tag.equalsIgnoreCase(getString(R.string.tag_show_qrcode))){
+                        getSupportFragmentManager().popBackStack(getString(R.string.tag_show_qrcode), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                    }
                 }
-                else if (tag.equalsIgnoreCase(getString(R.string.tag_receive))){
-                    Toast.makeText(getApplicationContext(), tag, Toast.LENGTH_SHORT).show();
-                    super.onBackPressed();
-                }
+            }catch (NullPointerException e){
+                e.printStackTrace();
             }
 
         }else{

@@ -132,7 +132,6 @@ public class PayCashFragment extends Fragment implements ZXingScannerView.Result
 
     @Override
     public void handleResult(Result result) {
-//        Toast.makeText(getActivity(), "" + result, Toast.LENGTH_LONG).show();
         if (!result.getText().trim().isEmpty()){
             String[] value = result.getText().split(",");
             createDialog(value[0], value[1]);

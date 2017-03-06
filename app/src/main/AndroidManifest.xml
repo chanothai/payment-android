@@ -17,8 +17,8 @@
 
     <application
         android:allowBackup="true"
-        android:label="@string/app_name"
         android:icon="@drawable/logo_mof"
+        android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.WithoutActionBar">
         //Check version for google play service
@@ -33,21 +33,24 @@
 
         <activity
             android:name=".activity.MainActivity"
-            android:windowSoftInputMode="adjustNothing"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustNothing">
+
+        </activity>
+        <activity
+            android:name="com.company.zicure.survey.activity.SurveyActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="profilemof.zicure.company.com.profilemof.activity.ProfileActivity"
+            android:screenOrientation="portrait" />
+
+        <activity android:name=".activity.AuthActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name="com.company.zicure.survey.activity.SurveyActivity"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name="profilemof.zicure.company.com.profilemof.activity.ProfileActivity"
-            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

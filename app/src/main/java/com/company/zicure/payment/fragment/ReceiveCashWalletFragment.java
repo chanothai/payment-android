@@ -47,7 +47,6 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
 
     //View
     private EditText inputCash = null;
-    private RelativeLayout contentReceiveWallet = null;
     private InputMethodManager keySoft = null;
 
     public ReceiveCashWalletFragment() {
@@ -89,7 +88,7 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
         inputCash = (EditText) root.findViewById(R.id.edit_amount_pay);
         imgPayer = (CircleImageView) root.findViewById(R.id.img_payment);
         imgReceiver = (CircleImageView) root.findViewById(R.id.img_receiver);
-        contentReceiveWallet = (RelativeLayout) root.findViewById(R.id.content_receive_cash_wallet);
+        keySoft = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         return root;
     }
 
@@ -100,8 +99,6 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
         inputCash.setOnFocusChangeListener(this);
         inputCash.requestFocus();
         inputCash.setOnEditorActionListener(this);
-
-        keySoft = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         if (savedInstanceState == null){
             openKeyBoard();
@@ -158,7 +155,5 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
     @Override
     public void onDestroy() {
         super.onDestroy();
-        closeKeyBoard();
-
     }
 }

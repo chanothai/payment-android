@@ -135,11 +135,6 @@ public class GenerateQRCodeFragment extends Fragment implements View.OnClickList
         }.start();
     }
 
-    private void clearStackFragment(){
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
     private void generateQRCode(int width, int height){
         if (multiFormatWriter == null){
             multiFormatWriter = new MultiFormatWriter();
@@ -163,6 +158,6 @@ public class GenerateQRCodeFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        ((MainActivity)getActivity()).setLayoutPayResult();
+        ((MainActivity)getActivity()).callPayResultFragment();
     }
 }

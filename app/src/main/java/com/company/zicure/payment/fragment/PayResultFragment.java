@@ -123,6 +123,6 @@ public class PayResultFragment extends Fragment implements View.OnClickListener{
         FragmentManager fm = getActivity().getSupportFragmentManager();
         fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        ((MainActivity)getActivity()).setFragmentLayout();
+        ((MainActivity)getActivity()).callMainPayFragment();
     }
 }
