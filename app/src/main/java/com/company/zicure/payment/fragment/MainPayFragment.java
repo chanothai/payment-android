@@ -35,10 +35,12 @@ import com.company.zicure.survey.models.QuestionRequest;
 import com.company.zicure.survey.utilize.ModelCartSurvey;
 
 import com.google.gson.Gson;
+import com.joooonho.SelectableRoundedImageView;
 
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gallery.zicure.company.com.gallery.util.ResizeScreen;
 import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
 
 
@@ -62,7 +64,7 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
     private Button btnReceive = null;
     private RecyclerView listStatement = null;
 
-    private CircleImageView circleImageView = null;
+    private SelectableRoundedImageView circleImageView = null;
     private StatementAdapter statementAdapter = null;
 
     //Layout
@@ -98,11 +100,15 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
         View root = inflater.inflate(R.layout.fragment_main_pay, container, false);
         btnPay = (Button) root.findViewById(R.id.btn_pay_cash);
         btnReceive = (Button) root.findViewById(R.id.btn_receive_cash);
-        circleImageView = (CircleImageView) root.findViewById(R.id.img_profile);
+        circleImageView = (SelectableRoundedImageView) root.findViewById(R.id.img_profile);
         listStatement = (RecyclerView) root.findViewById(R.id.recycler_list);
 
         layoutProfile = (RelativeLayout) root.findViewById(R.id.layout_profile);
         layoutStatement = (LinearLayout) root.findViewById(R.id.layout_statement);
+
+        btnPay.setOnClickListener(this);
+        btnReceive.setOnClickListener(this);
+        circleImageView.setOnClickListener(this);
         return root;
     }
 
@@ -110,9 +116,7 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        btnPay.setOnClickListener(this);
-        btnReceive.setOnClickListener(this);
-        circleImageView.setOnClickListener(this);
+        resizeImgProfile();
         initialAnimation();
         if (savedInstanceState == null){
             if (account != null && token != null){
@@ -125,8 +129,6 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
                 }
             }
         }
-
-        listStatement.setLayoutManager(new LinearLayoutManager(getActivity()));
     }
 
     private void initialAnimation() {
@@ -136,6 +138,14 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
 
         animTogether.playTogether(animProfileY,animStatementY);
         animTogether.start();
+    }
+
+    private void resizeImgProfile(){
+        ResizeScreen resizeScreen = new ResizeScreen(getActivity());
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) circleImageView.getLayoutParams();
+        params.height = resizeScreen.widthScreen(4);
+        params.width = resizeScreen.widthScreen(4);
+        circleImageView.setLayoutParams(params);
     }
 
     private void setToken(){
@@ -238,6 +248,7 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
             }
         };
 
+        listStatement.setLayoutManager(new LinearLayoutManager(getActivity()));
         listStatement.setAdapter(statementAdapter);
         listStatement.setItemAnimator(new DefaultItemAnimator());
         listStatement.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));

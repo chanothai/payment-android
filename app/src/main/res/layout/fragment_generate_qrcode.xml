@@ -20,9 +20,10 @@
 
     <ImageView
         android:id="@+id/img_qrcode"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/time_refresh"
+        android:layout_centerInParent="true"
         android:layout_margin="@dimen/padding_large"
         android:scaleType="centerInside"
         android:background="@android:color/transparent"

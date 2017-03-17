@@ -17,6 +17,8 @@ import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -24,8 +26,10 @@ import com.company.zicure.payment.R;
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.network.ClientHttp;
 import com.company.zicure.payment.util.ModelCart;
+import com.joooonho.SelectableRoundedImageView;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import gallery.zicure.company.com.gallery.util.ResizeScreen;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,8 +46,7 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
     private String mParam1;
     private String mParam2;
 
-    private CircleImageView imgPayer = null;
-    private CircleImageView imgReceiver = null;
+    private SelectableRoundedImageView imgPayer = null;
 
     //View
     private EditText inputCash = null;
@@ -86,29 +89,35 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_receive_cash_wallet, container, false);
         inputCash = (EditText) root.findViewById(R.id.edit_amount_pay);
-        imgPayer = (CircleImageView) root.findViewById(R.id.img_payment);
-        imgReceiver = (CircleImageView) root.findViewById(R.id.img_receiver);
+        imgPayer = (SelectableRoundedImageView) root.findViewById(R.id.img_payer);
         keySoft = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+
+        inputCash.addTextChangedListener(this);
+        inputCash.setOnFocusChangeListener(this);
+        inputCash.requestFocus();
+        inputCash.setOnEditorActionListener(this);
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        inputCash.addTextChangedListener(this);
-        inputCash.setOnFocusChangeListener(this);
-        inputCash.requestFocus();
-        inputCash.setOnEditorActionListener(this);
 
         if (savedInstanceState == null){
             openKeyBoard();
-            if (ModelCart.getInstance().getModel().accountUserModel.accountNo.equalsIgnoreCase(getString(R.string.account2))){
-                imgReceiver.setImageResource(R.drawable.yajai);
-            }
-            else if (ModelCart.getInstance().getModel().accountUserModel.accountNo.equalsIgnoreCase(getString(R.string.account1))){
-                imgReceiver.setImageResource(R.drawable.base);
-            }
+            setImgProfile();
         }
+    }
+
+    private void setImgProfile(){
+        ResizeScreen resizeScreen = new ResizeScreen(getActivity());
+        int width = resizeScreen.widthScreen(5);
+
+        FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams) imgPayer.getLayoutParams();
+        params2.height = width;
+        params2.width = width;
+        imgPayer.setLayoutParams(params2);
+        imgPayer.setImageResource(R.drawable.ic_person_black_100dp);
     }
 
     @Override

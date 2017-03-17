@@ -2,68 +2,50 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/colorGrayBg">
+    android:background="@color/colorGrayBg"
+    android:paddingTop="@dimen/padding_large"
+    android:paddingBottom="@dimen/padding_large">
 
     <RelativeLayout
         android:id="@+id/content_receive_cash_wallet"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="bottom">
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:id="@+id/layout_cover_main"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <include
+                android:id="@+id/img_payer"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                layout="@layout/content_circle_image"/>
+        </FrameLayout>
+
 
         <LinearLayout
             android:id="@+id/layout_input_cash"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:layout_below="@id/layout_cover_main"
             android:padding="@dimen/padding_medium"
             android:gravity="center">
-
-            <LinearLayout
-                android:id="@+id/content_img"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:padding="@dimen/padding_large">
-
-                <include
-                    android:id="@+id/img_payment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    layout="@layout/content_circle_image"/>
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1.2"
-                    app:srcCompat ="@drawable/ic_forward"
-                    android:scaleType="centerInside"
-                    android:tint="@android:color/darker_gray"/>
-
-                <include
-                    android:id="@+id/img_receiver"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    layout="@layout/content_circle_image"/>
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/title_receive_cash"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
                 style="@style/BaseFont"
+                android:padding="@dimen/padding_medium"
                 android:gravity="center"
                 android:text="@string/content_receive_cash_th"/>
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1.2"
+                android:layout_height="wrap_content"
                 android:paddingTop="@dimen/padding_small">
                 <EditText
                     android:layout_width="match_parent"

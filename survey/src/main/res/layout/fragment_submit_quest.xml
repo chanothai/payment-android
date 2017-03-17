@@ -14,6 +14,17 @@
         android:layout_centerInParent="true"
         android:gravity="center_horizontal">
 
+
+        <Button
+            android:id="@+id/btn_submit"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/size_text_medium"
+            android:background="@drawable/select_btn_receive"
+            android:text="@string/btn_confirm_th"
+            />
+
         <TextView
             android:id="@+id/topic_complete_assessment"
             android:layout_width="match_parent"
@@ -33,18 +44,6 @@
             android:textColor="@android:color/darker_gray"
             android:text="@string/content_complete_th" />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_submit"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_above="@+id/layout_complete"
-        android:layout_centerHorizontal="true"
-        android:textColor="@android:color/white"
-        android:textSize="@dimen/size_text_medium"
-        android:background="@drawable/select_btn_receive"
-        android:text="@string/btn_confirm_th"
-        />
 
 
 </RelativeLayout>

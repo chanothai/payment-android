@@ -11,6 +11,7 @@ import com.company.zicure.payment.R;
 import com.company.zicure.payment.interfaces.ItemClickListener;
 import com.company.zicure.payment.model.ResponseStatement;
 import com.company.zicure.payment.util.ModelCart;
+import com.joooonho.SelectableRoundedImageView;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ abstract public class StatementAdapter extends RecyclerView.Adapter<StatementAda
         public TextView date;
         public TextView cash;
         public TextView rating;
-        public CircleImageView imgProfile;
+        public SelectableRoundedImageView imgProfile;
 
         public ItemClickListener itemClickListener;
 
@@ -54,7 +55,7 @@ abstract public class StatementAdapter extends RecyclerView.Adapter<StatementAda
             date = (TextView)itemView.findViewById(R.id.statement_date);
             cash = (TextView) itemView.findViewById(R.id.statement_cash);
             rating = (TextView) itemView.findViewById(R.id.statement_point);
-            imgProfile = (CircleImageView) itemView.findViewById(R.id.img_profile);
+            imgProfile = (SelectableRoundedImageView) itemView.findViewById(R.id.img_profile);
 
             itemView.setClickable(true);
             itemView.setOnClickListener(this);

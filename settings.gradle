@@ -1,1 +1,1 @@
-include ':app', ':bottom-bar', ':survey', ':profile'
+include ':app', ':bottom-bar', ':survey', ':gallery', ':profile'

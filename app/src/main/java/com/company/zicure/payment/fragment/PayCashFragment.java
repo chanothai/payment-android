@@ -100,27 +100,25 @@ public class PayCashFragment extends Fragment implements ZXingScannerView.Result
     }
 
     private void createDialog(String code, String cash){
-        if (dialog == null){
-            dialog = new Dialog(getActivity());
-            dialog.setCanceledOnTouchOutside(false);
-            dialog.setContentView(R.layout.dialog_check_pay);
+        dialog = new Dialog(getActivity());
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setContentView(R.layout.dialog_check_pay);
 
-            txtQuestion = (TextView) dialog.findViewById(R.id.title_receiver);
-            txtReceiver = (TextView) dialog.findViewById(R.id.title_detail_receive);
-            txtAmountCash = (TextView) dialog.findViewById(R.id.amount_cash);
-            btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
-            btnConfirm = (Button) dialog.findViewById(R.id.btn_confirm);
+        txtQuestion = (TextView) dialog.findViewById(R.id.title_receiver);
+        txtReceiver = (TextView) dialog.findViewById(R.id.title_detail_receive);
+        txtAmountCash = (TextView) dialog.findViewById(R.id.amount_cash);
+        btnCancel = (Button) dialog.findViewById(R.id.btn_cancel);
+        btnConfirm = (Button) dialog.findViewById(R.id.btn_confirm);
 
-            btnCancel.setOnClickListener(this);
-            btnConfirm.setOnClickListener(this);
+        btnCancel.setOnClickListener(this);
+        btnConfirm.setOnClickListener(this);
 
-            currentCash = FormatCash.newInstance().setFormatCash(Double.parseDouble(cash));
-            currentReceiver = code;
+        currentCash = FormatCash.newInstance().setFormatCash(Double.parseDouble(cash));
+        currentReceiver = code;
 
-            txtReceiver.setText("ชำระเงินไปยัง " + code + " เป็นจำนวนเงิน: ");
-            txtQuestion.setText(R.string.content_dialog_th);
-            txtAmountCash.setText(currentCash+" " + getString(R.string.cash_thai));
-        }
+        txtReceiver.setText("ชำระเงินไปยัง " + code + " เป็นจำนวนเงิน: ");
+        txtQuestion.setText(R.string.content_dialog_th);
+        txtAmountCash.setText(currentCash+" " + getString(R.string.cash_thai));
     }
 
     public void qrScanner(){

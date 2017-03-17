@@ -98,20 +98,7 @@ public class ReceiveCashFragment extends Fragment {
     }
 
     private void resizeView(){
-        screenHeight = pagerReceiveCash.getRootView().getHeight();
-        pagerReceiveCash.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                Rect rect = new Rect();
-                pagerReceiveCash.getWindowVisibleDisplayFrame(rect);
-                if (screenHeight >= rect.bottom){
-                    RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) pagerReceiveCash.getLayoutParams();
-                    screenHeight = ((rect.bottom - rect.right));
-                    params.height = screenHeight;
-                    pagerReceiveCash.setLayoutParams(params);
-                }
-            }
-        });
+
     }
 
 

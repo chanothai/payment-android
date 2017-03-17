@@ -3,12 +3,12 @@
     android:shape="oval">
     <stroke
         android:width="2dp"
-        android:color="@color/colorBlueStrongPress"/>
+        android:color="@color/colorPrimary"/>
 
     <gradient
         android:type="radial"
         android:gradientRadius="200dp"
-        android:startColor="@color/colorBlueStrongGradient"
-        android:endColor="@color/colorBlueStrongNormal"
+        android:startColor="@color/colorAccent"
+        android:endColor="@color/colorPrimary"
         />
 </shape>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
@@ -18,6 +19,7 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
 
+import gallery.zicure.company.com.gallery.util.ResizeScreen;
 import profilemof.zicure.company.com.profilemof.R;
 
 /**
@@ -25,7 +27,7 @@ import profilemof.zicure.company.com.profilemof.R;
  * Use the {@link AddCashFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AddCashFragment extends Fragment {
+public class AddCashFragment extends Fragment{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -39,7 +41,11 @@ public class AddCashFragment extends Fragment {
 
     //View
     private ImageView imgQrCode = null;
+    private RelativeLayout layoutAddCash = null;
 
+    private ViewTreeObserver viewTreeObserver = null;
+    private int width = 0;
+    private int height = 0;
 
     public AddCashFragment() {
         // Required empty public constructor
@@ -78,24 +84,22 @@ public class AddCashFragment extends Fragment {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_add_cash, container, false);
         imgQrCode = (ImageView) root.findViewById(R.id.qrCode);
+        layoutAddCash = (RelativeLayout) root.findViewById(R.id.layout_add_cash);
         return root;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        calPayoutParams();
+        if (savedInstanceState == null){
+            resizeImgQRCode();
+        }
     }
 
-    private void calPayoutParams(){
-        ViewTreeObserver observer = imgQrCode.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                generateQRCode(imgQrCode.getWidth(), imgQrCode.getHeight());
-                Log.d("LayoutParam", String.valueOf(imgQrCode.getWidth())+ " , "+ String.valueOf(imgQrCode.getHeight()));
-            }
-        });
+    private void resizeImgQRCode(){
+        ResizeScreen resizeScreen = new ResizeScreen(getActivity());
+        int width = resizeScreen.widthScreen(1);
+//        generateQRCode(width, width);
     }
 
     private void generateQRCode(int width, int height){
@@ -111,5 +115,4 @@ public class AddCashFragment extends Fragment {
             }
         }
     }
-
 }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.company.zicure.payment.activity.MainActivity;
@@ -26,6 +27,8 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+
+import gallery.zicure.company.com.gallery.util.ResizeScreen;
 
 import static android.R.attr.name;
 
@@ -107,13 +110,9 @@ public class GenerateQRCodeFragment extends Fragment implements View.OnClickList
     }
 
     private void calLayoutQrcode(){
-        ViewTreeObserver observer = imgQrCode.getViewTreeObserver();
-        observer.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                generateQRCode(imgQrCode.getWidth(), imgQrCode.getWidth());
-            }
-        });
+        ResizeScreen resizeScreen = new ResizeScreen(getActivity());
+        int width = resizeScreen.widthScreen(1);
+        generateQRCode(width, width);
     }
 
     private void runTimeRefresh(){
