@@ -169,6 +169,8 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
                 transaction.addToBackStack(getString(R.string.tag_pay));
                 transaction.commit();
 
+                //set mode
+                ModelCart.getInstance().setMode(getString(R.string.txt_wallet));
                 break;
             case R.id.btn_receive_cash:
                 ModelCart.getInstance().getModel().accountUserModel.type = getString(R.string.tag_receive);

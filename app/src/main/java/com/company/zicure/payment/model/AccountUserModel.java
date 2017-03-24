@@ -19,4 +19,6 @@ public class AccountUserModel {
     public String type;
     @SerializedName("balance")
     public String balance = null;
+    @SerializedName("card_code")
+    public String cardCode;
 }

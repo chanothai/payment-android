@@ -16,4 +16,9 @@
     <string name="birthday_th">วันเกิด</string>
     <string name="address_th">ที่อยู่</string>
     <string name="number_phone_th">เบอร์โทรศัพท์</string>
+
+    <string name="change_password_th">เปลี่ยนรหัสผ่าน</string>
+    <string name="new_password_th">รหัสผ่านใหม่</string>
+    <string name="original_password_th">รหัสผ่านเดิม</string>
+    <string name="again_password_th">รหัสผ่านใหม่อีกครั้ง</string>
 </resources>

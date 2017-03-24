@@ -127,7 +127,7 @@ public class GenerateQRCodeFragment extends Fragment implements View.OnClickList
                 NextzyUtil.launch(new NextzyUtil.LaunchCallback() {
                     @Override
                     public void onLaunchCallback() {
-//                        clearStackFragment();
+                        getFragmentManager().popBackStack(getString(R.string.tag_show_qrcode), FragmentManager.POP_BACK_STACK_INCLUSIVE);
                     }
                 });
             }

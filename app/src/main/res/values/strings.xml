@@ -48,4 +48,6 @@
     <string name="tag_receive_qr_card">ReceiveQRCard</string>
     <string name="tag_main_fragment">mainFragment</string>
     <string name="tag_show_qrcode">showQRCode</string>
+    <string name="message_error_check_money_th">คุณมีเงินไม่พอ</string>
+    <string name="message_error_check_qrcode_th">QRCode ไม่ถูกต้อง</string>
 </resources>

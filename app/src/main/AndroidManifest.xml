@@ -51,9 +51,6 @@
         <activity android:name="gallery.zicure.company.com.gallery.activity.GalleryActivity"/>
         <activity android:name="gallery.zicure.company.com.gallery.activity.ShareImageActivity"/>
 
-        <activity android:name=".activity.AuthActivity">
-
-        </activity>
     </application>
 
 </manifest>

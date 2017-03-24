@@ -7,6 +7,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,11 +15,17 @@ import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.network.ClientHttp;
+import com.company.zicure.payment.util.ModelCart;
+import com.joooonho.SelectableRoundedImageView;
+
+import gallery.zicure.company.com.gallery.util.ResizeScreen;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -34,6 +41,8 @@ public class ReceiveCashQrCardFragment extends Fragment implements EditText.OnEd
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private ImageView imgPayer = null;
 
     //View
     private EditText editCash = null;
@@ -75,6 +84,7 @@ public class ReceiveCashQrCardFragment extends Fragment implements EditText.OnEd
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_receive_cash_qr_card, container, false);
+        imgPayer = (ImageView) root.findViewById(R.id.img_payer);
         editCash = (EditText) root.findViewById(R.id.edit_amount_pay);
         keySoft = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
         return root;
@@ -85,8 +95,20 @@ public class ReceiveCashQrCardFragment extends Fragment implements EditText.OnEd
         super.onActivityCreated(savedInstanceState);
         editCash.setOnEditorActionListener(this);
         if (savedInstanceState == null){
-
+            setImgProfile();
         }
+    }
+
+    private void setImgProfile(){
+        ResizeScreen resizeScreen = new ResizeScreen(getActivity());
+        int width = resizeScreen.widthScreen(5);
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imgPayer.getLayoutParams();
+        params.height = width;
+        params.width = width;
+        imgPayer.setLayoutParams(params);
+        imgPayer.setColorFilter(ContextCompat.getColor(getActivity(), android.R.color.darker_gray));
+        imgPayer.setImageResource(R.drawable.bank_card);
     }
 
     private void openKeyBoard(){
@@ -101,8 +123,13 @@ public class ReceiveCashQrCardFragment extends Fragment implements EditText.OnEd
     public boolean onEditorAction(TextView textView, int actionID, KeyEvent keyEvent) {
         switch (actionID){
             case EditorInfo.IME_ACTION_NEXT:
-                ((MainActivity)getActivity()).callPayCashFragment();
-                closeKeyBoard();
+                if (!editCash.getText().toString().trim().isEmpty()){
+                    ((MainActivity)getActivity()).showLoadingDialog();
+                    ModelCart.getInstance().setMode(getString(R.string.txt_qrcard));
+                    ModelCart.getInstance().getModel().accountUserModel.amount = Double.parseDouble(editCash.getText().toString().trim());
+                    ClientHttp.getInstance(getActivity()).requestPay(ModelCart.getInstance().getModel().accountUserModel);
+                    closeKeyBoard();
+                }
                 break;
         }
         return false;

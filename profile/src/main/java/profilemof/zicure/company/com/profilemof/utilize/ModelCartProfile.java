@@ -20,7 +20,7 @@ public class ModelCartProfile {
         return me;
     }
 
-    public User getAccount(){
+    public User getUser(){
         return user;
     }
 }

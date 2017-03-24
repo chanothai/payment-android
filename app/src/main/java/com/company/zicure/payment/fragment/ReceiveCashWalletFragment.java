@@ -6,6 +6,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import android.widget.TextView;
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.network.ClientHttp;
+import com.company.zicure.payment.util.FormatCash;
 import com.company.zicure.payment.util.ModelCart;
 import com.joooonho.SelectableRoundedImageView;
 
@@ -46,7 +49,7 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
     private String mParam1;
     private String mParam2;
 
-    private SelectableRoundedImageView imgPayer = null;
+    private ImageView imgPayer = null;
 
     //View
     private EditText inputCash = null;
@@ -89,7 +92,7 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
         // Inflate the layout for this fragment
         View root = inflater.inflate(R.layout.fragment_receive_cash_wallet, container, false);
         inputCash = (EditText) root.findViewById(R.id.edit_amount_pay);
-        imgPayer = (SelectableRoundedImageView) root.findViewById(R.id.img_payer);
+        imgPayer = (ImageView) root.findViewById(R.id.img_payer);
         keySoft = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 
         inputCash.addTextChangedListener(this);
@@ -113,11 +116,12 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
         ResizeScreen resizeScreen = new ResizeScreen(getActivity());
         int width = resizeScreen.widthScreen(5);
 
-        FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams) imgPayer.getLayoutParams();
-        params2.height = width;
-        params2.width = width;
-        imgPayer.setLayoutParams(params2);
-        imgPayer.setImageResource(R.drawable.ic_person_black_100dp);
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) imgPayer.getLayoutParams();
+        params.height = width;
+        params.width = width;
+        imgPayer.setLayoutParams(params);
+        imgPayer.setColorFilter(ContextCompat.getColor(getActivity(), android.R.color.darker_gray));
+        imgPayer.setImageResource(R.drawable.wallet);
     }
 
     @Override
@@ -145,6 +149,7 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
         if (actionId == EditorInfo.IME_ACTION_NEXT){
             if (!inputCash.getText().toString().trim().isEmpty()){
                 ((MainActivity)getActivity()).showLoadingDialog();
+                ModelCart.getInstance().setMode(getString(R.string.txt_wallet));
                 ModelCart.getInstance().getModel().accountUserModel.amount = Double.parseDouble(inputCash.getText().toString().trim());
                 ClientHttp.getInstance(getActivity()).requestPay(ModelCart.getInstance().getModel().accountUserModel);
                 closeKeyBoard();

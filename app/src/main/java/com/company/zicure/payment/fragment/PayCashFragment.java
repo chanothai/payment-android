@@ -5,11 +5,13 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.util.PermissionRequest;
@@ -130,11 +132,18 @@ public class PayCashFragment extends Fragment implements ZXingScannerView.Result
 
     @Override
     public void handleResult(Result result) {
-        if (!result.getText().trim().isEmpty()){
+        if (!result.getText().trim().isEmpty() && result.getText() != null){
             String[] value = result.getText().split(",");
-            createDialog(value[0], value[1]);
-
-            dialog.show();
+            if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_wallet))){
+                Toast.makeText(getActivity(), value[0] + ", " + value[1], Toast.LENGTH_SHORT).show();
+                createDialog(value[0], value[1]);
+                dialog.show();
+            }
+            else if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_qrcard))){
+                ModelCart.getInstance().getModel().accountUserModel.accountNo = value[0];
+                ((MainActivity)getActivity()).showLoadingDialog();
+                ClientHttp.getInstance(getActivity()).requestScanQR(ModelCart.getInstance().getModel().accountUserModel);
+            }
         }
     }
 

@@ -73,22 +73,25 @@ public class ClientHttp {
     }
 
     public void requestPay(AccountUserModel accountUserModel){
-        Log.d("RequestPay", new Gson().toJson(accountUserModel));
+        Log.d("Requestpay", new Gson().toJson(accountUserModel));
         Call<ResponseQRCode> callQRcode = service.requestPay(accountUserModel);
         callQRcode.enqueue(new Callback<ResponseQRCode>() {
             @Override
             public void onResponse(Call<ResponseQRCode> call, Response<ResponseQRCode> response) {
-                Log.d("Code", new Gson().toJson(response.body()));
                 try {
+                    Log.d("Code", new Gson().toJson(response.body()));
                     EventBusCart.getInstance().getEventBus().post(response.body());
                 }catch (NullPointerException e){
-                    e.printStackTrace();
+                    ResponseQRCode responseQRCode = new ResponseQRCode();
+                    ResponseQRCode.Result result = new ResponseQRCode.Result();
+                    result.setUrlQRCode(context.getString(R.string.message_error_check_qrcode_th));
+                    responseQRCode.setResult(result);
+                    EventBusCart.getInstance().getEventBus().post(responseQRCode);
                 }
             }
 
             @Override
             public void onFailure(Call<ResponseQRCode> call, Throwable t) {
-                t.printStackTrace();
             }
         });
     }
@@ -122,8 +125,8 @@ public class ClientHttp {
         callBalance.enqueue(new Callback<ResponseBalance>() {
             @Override
             public void onResponse(Call<ResponseBalance> call, Response<ResponseBalance> response) {
-                Log.d("Balance", new Gson().toJson(response.body()));
                 try {
+                    Log.d("Balance", new Gson().toJson(response.body()));
                     EventBusCart.getInstance().getEventBus().post(response.body());
                 }catch (NullPointerException e){
                     e.printStackTrace();

@@ -45,7 +45,7 @@ public class QuestionViewPagerAdapter extends FragmentPagerAdapter {
                 ModelCartSurvey.newInstance().getAllPage().add(pageCurrent, ROWCHOICE);
             }
             return EmoQuestionFragment.newInstance(position, "");
-        }else if (resultPage < 0){
+        }else if (resultPage <= 0){
             int rs = resultPage + 4;
             if (rs <= 0) {
                 return new SubmitQuestFragment();

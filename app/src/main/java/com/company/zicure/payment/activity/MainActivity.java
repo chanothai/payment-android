@@ -38,11 +38,13 @@ import com.company.zicure.payment.store.StoreAccount;
 import com.company.zicure.payment.util.EventBusCart;
 import com.company.zicure.payment.util.FormatCash;
 import com.company.zicure.payment.util.ModelCart;
+import com.company.zicure.payment.util.VarialableConnect;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
 
 public class MainActivity extends BaseActivity {
 
@@ -62,7 +64,6 @@ public class MainActivity extends BaseActivity {
     //Fragment
     private ObjectAnimator rotationLogo = null;
 
-
     private double amount;
     private String accountUser;
     @Override
@@ -73,9 +74,21 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
 
         if (savedInstanceState == null){
-            accountUser = getString(R.string.account2);
+            accountUser = VarialableConnect.account;
+            ModelCartProfile.getInstance().getUser().setAccount(accountUser);
             setToolbar();
-            getFirstToken();
+
+            Bundle bundle = getIntent().getExtras();
+            try{
+                if (bundle != null){
+                    String authCode = bundle.getString("auth_code");
+                    if (authCode != null){
+                        Toast.makeText(this, authCode, Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
         }
     }
 
@@ -136,6 +149,13 @@ public class MainActivity extends BaseActivity {
         transaction.commit();
     }
 
+    public void callGenerateQRCodeFragment(String qrcode){
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.container, GenerateQRCodeFragment.newInstance(String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount),qrcode));
+        transaction.addToBackStack(getString(R.string.tag_show_qrcode));
+        transaction.commit();
+    }
+
     public void callPayResultFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.container, PayResultFragment.newInstance(getModel().accountUserModel.type, String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount)));
@@ -180,6 +200,7 @@ public class MainActivity extends BaseActivity {
         getModel().option = statement.getResult();
         Log.d("Statement", new Gson().toJson(getModel().option));
 
+        ModelCart.getInstance().getModel().accountUserModel.accountNo = accountUser;
         //Call statement for show
         FragmentManager fm = getSupportFragmentManager();
         MainPayFragment fragment = (MainPayFragment)fm.findFragmentByTag(getString(R.string.tagMainPayFragment));
@@ -218,37 +239,45 @@ public class MainActivity extends BaseActivity {
     }
 
     @Subscribe
-    public void onEventShowQR(ResponseQRCode qrCode){
+    public void onEventReceiveCash(ResponseQRCode qrCode){
         try{
             ResponseQRCode.Result result = qrCode.getResult();
-            //Store Data
-            ModelCart.getInstance().getModel().qrCodeModel.qrcode = result.getUrlQRCode();
 
-            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.container, GenerateQRCodeFragment.newInstance(String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount),result.getUrlQRCode()));
-            transaction.addToBackStack(getString(R.string.tag_show_qrcode));
-            transaction.commit();
+            if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_wallet))){
+                callGenerateQRCodeFragment(result.getUrlQRCode());
+            }
+
+            else if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_qrcard))){
+                ModelCart.getInstance().getModel().accountUserModel.code = result.getUrlQRCode();
+                callPayCashFragment();
+            }
+
         }catch (NullPointerException e){
             e.printStackTrace();
-            Toast.makeText(this, "code null", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, R.string.message_error_check_money_th, Toast.LENGTH_SHORT).show();
         }
 
         dismissDialog();
     }
 
     @Subscribe
-    public void onEventScanQR(ResponseScanQR scanQR){
+    public void onEventPayCash(ResponseScanQR scanQR){
         ResponseScanQR.Result result = scanQR.getResult();
-
-        if (result.getCode().equalsIgnoreCase("SUCCESS")){
-            callPayResultFragment();
-            Toast.makeText(getApplicationContext(), result.getCode(), Toast.LENGTH_SHORT).show();
+        Log.d("Paycash", new Gson().toJson(scanQR));
+        try {
+            if (result.getCode().equalsIgnoreCase("SUCCESS")){
+                callPayResultFragment();
+                Toast.makeText(getApplicationContext(), result.getCode(), Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(getApplicationContext(), result.getDescription(), Toast.LENGTH_SHORT).show();
+                callCamera();
+            }
+            //reset user because it changed user to receive cash qr card before
+            ModelCart.getInstance().getModel().accountUserModel.accountNo = accountUser;
             dismissDialog();
-        }else{
-            Toast.makeText(getApplicationContext(), result.getCode(), Toast.LENGTH_SHORT).show();
+        }catch (NullPointerException e){
+            e.printStackTrace();
             dismissDialog();
-
-            callCamera();
         }
     }
 
@@ -272,6 +301,7 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        getFirstToken();
     }
 
     @Override

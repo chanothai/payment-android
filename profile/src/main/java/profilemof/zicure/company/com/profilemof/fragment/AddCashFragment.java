@@ -21,6 +21,7 @@ import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import gallery.zicure.company.com.gallery.util.ResizeScreen;
 import profilemof.zicure.company.com.profilemof.R;
+import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -99,14 +100,14 @@ public class AddCashFragment extends Fragment{
     private void resizeImgQRCode(){
         ResizeScreen resizeScreen = new ResizeScreen(getActivity());
         int width = resizeScreen.widthScreen(1);
-//        generateQRCode(width, width);
+        generateQRCode(width, width);
     }
 
     private void generateQRCode(int width, int height){
         if (multiFormatWriter == null){
             multiFormatWriter = new MultiFormatWriter();
             try{
-                BitMatrix bitMatrix = multiFormatWriter.encode("1719900291478", BarcodeFormat.QR_CODE, width, height);
+                BitMatrix bitMatrix = multiFormatWriter.encode(ModelCartProfile.getInstance().getUser().getAccount(), BarcodeFormat.QR_CODE, width, height);
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                 imgQrCode.setImageBitmap(bitmap);

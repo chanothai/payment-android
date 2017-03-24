@@ -18,7 +18,7 @@ public class ResponseQRCode {
         this.result = result;
     }
 
-    public class Result {
+    public static class Result {
         @SerializedName("token")
         private String token;
         @SerializedName("code")

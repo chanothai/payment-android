@@ -106,11 +106,11 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     private void setImgProfile(){
         try{
             imgEditProfile.setImageResource(R.drawable.ic_google_images);
-            if (ModelCartProfile.getInstance().getAccount().equals(getString(R.string.account1))){
+            if (ModelCartProfile.getInstance().getUser().getAccount().equals(getString(R.string.account1))){
                 imgProfile.setImageResource(R.drawable.base);
                 accountProfile.setText(getString(R.string.account1));
             }
-            else if (ModelCartProfile.getInstance().getAccount().equals(getString(R.string.account2))){
+            else if (ModelCartProfile.getInstance().getUser().getAccount().equals(getString(R.string.account2))){
                 imgProfile.setImageResource(R.drawable.yajai);
                 accountProfile.setText(getString(R.string.account2));
             }
