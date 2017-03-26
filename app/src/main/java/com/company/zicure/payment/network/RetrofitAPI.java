@@ -16,6 +16,7 @@ public class RetrofitAPI {
     public RetrofitAPI(String url){
         this.url = url;
     }
+
     public static RetrofitAPI newInstance(String url){
         if (me == null){
             me = new RetrofitAPI(url);

@@ -4,7 +4,7 @@
     package="com.company.zicure.payment">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-feature
@@ -33,13 +33,6 @@
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
         </activity>
         <activity
             android:name="com.company.zicure.survey.activity.SurveyActivity"
@@ -47,10 +40,17 @@
         <activity
             android:name="profilemof.zicure.company.com.profilemof.activity.ProfileActivity"
             android:screenOrientation="portrait" />
+        <activity android:name="gallery.zicure.company.com.gallery.activity.GalleryActivity" />
+        <activity android:name="gallery.zicure.company.com.gallery.activity.ShareImageActivity" />
+        <activity
+            android:name=".activity.LoginActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-        <activity android:name="gallery.zicure.company.com.gallery.activity.GalleryActivity"/>
-        <activity android:name="gallery.zicure.company.com.gallery.activity.ShareImageActivity"/>
-
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

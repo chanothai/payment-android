@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Payment</string>
+    <string name="app_name">MOF PAY</string>
 
     //Form text pay
     <string name="balance">เหลือ</string>
@@ -16,12 +16,6 @@
     <string name="dialog_loading">Loading</string>
     <string name="refresh">รีเฟรช</string>
     <string name="complete">เรียบร้อย</string>
-
-    //URL_SERVER
-    <string name="url_server">http://e-payment.gconnect-th.com/</string>
-    <!--<string name="url_server">http://180.180.244.228:9005/</string>-->
-    //URL_PATH
-    <string name="path_qrcode">e-money-client/Buyers/QRcode/</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -50,4 +44,13 @@
     <string name="tag_show_qrcode">showQRCode</string>
     <string name="message_error_check_money_th">คุณมีเงินไม่พอ</string>
     <string name="message_error_check_qrcode_th">QRCode ไม่ถูกต้อง</string>
+
+
+    //Login
+    <string name="message_get_userinfo_th">MOF PAY APPLICATION : จะขอรับข้อมูลส่วนตัวจาก CONNECT APPLICATION โดยท่านจะได้รับรหัสผ่าน เพื่อใช้ยืนยันการล็อคอิน</string>
+    <string name="cancel_th">ยกเลิก</string>
+    <string name="login_th">ล็อคอิน</string>
+    <string name="domain_code_th">รหัส:</string>
+
+    <style name="confirm_th">ตกลง</style>
 </resources>

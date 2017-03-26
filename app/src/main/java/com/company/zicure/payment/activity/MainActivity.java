@@ -38,6 +38,7 @@ import com.company.zicure.payment.store.StoreAccount;
 import com.company.zicure.payment.util.EventBusCart;
 import com.company.zicure.payment.util.FormatCash;
 import com.company.zicure.payment.util.ModelCart;
+import com.company.zicure.payment.util.ToolbarManager;
 import com.company.zicure.payment.util.VarialableConnect;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
@@ -77,56 +78,13 @@ public class MainActivity extends BaseActivity {
             accountUser = VarialableConnect.account;
             ModelCartProfile.getInstance().getUser().setAccount(accountUser);
             setToolbar();
-
-            Bundle bundle = getIntent().getExtras();
-            try{
-                if (bundle != null){
-                    String authCode = bundle.getString("auth_code");
-                    if (authCode != null){
-                        Toast.makeText(this, authCode, Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }catch (NullPointerException e){
-                e.printStackTrace();
-            }
         }
     }
 
     private void setToolbar(){
-        CoordinatorLayout.LayoutParams params = (CoordinatorLayout.LayoutParams) appBarLayout.getLayoutParams();
-        params.height = getActionBarHeight() + getStatusBarHeight() + 10;
-        appBarLayout.setLayoutParams(params);
-        toolbarMenu.setTitle("");
-        toolbarMenu.setPadding(0, getStatusBarHeight() + 10 , 0,0);
-        titleToolbar.setText("MOF PAY");
-        setSupportActionBar(toolbarMenu);
-    }
-
-    private int getActionBarHeight(){
-        int actionBarHeight = 0;
-        final TypedArray styleAttributes = getTheme().obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
-        actionBarHeight = (int) styleAttributes.getDimension(0,0);
-        styleAttributes.recycle();
-
-        return actionBarHeight;
-    }
-
-    private int getStatusBarHeight(){
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0){
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
-
-    private void setLogoAnimation(){
-        if (rotationLogo == null){
-            rotationLogo = ObjectAnimator.ofFloat(titleLogo, View.ROTATION_Y, 0,360);
-            rotationLogo.setRepeatCount(ValueAnimator.INFINITE);
-            rotationLogo.setDuration(10000);
-            rotationLogo.setInterpolator(new AccelerateDecelerateInterpolator());
-        }
+        ToolbarManager toolbarManager = new ToolbarManager(this);
+        toolbarManager.setToolbar(toolbarMenu, titleToolbar, getString(R.string.app_name));
+        toolbarManager.setAppbarLayout(appBarLayout);
     }
 
     private void getFirstToken(){

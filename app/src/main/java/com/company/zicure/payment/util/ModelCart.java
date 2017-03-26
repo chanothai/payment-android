@@ -2,6 +2,7 @@ package com.company.zicure.payment.util;
 
 import com.company.zicure.payment.model.AccountUserModel;
 import com.company.zicure.payment.model.ResponseStatement;
+import com.company.zicure.payment.model.ResponseUserCode;
 import com.company.zicure.payment.store.StoreAccount;
 
 import java.util.ArrayList;
@@ -14,12 +15,15 @@ public class ModelCart {
     private static ModelCart me = null;
     private StoreAccount storeAccount = null;
     private String mode;
+    private ResponseUserCode deviceToken = null;
 
     private ModelCart() {
         storeAccount = new StoreAccount();
         storeAccount.accountUserModel = new AccountUserModel();
         storeAccount.option = new ArrayList<ResponseStatement.Result>();
         mode = "";
+
+        deviceToken = new ResponseUserCode();
     }
 
     public static ModelCart getInstance(){
@@ -40,5 +44,9 @@ public class ModelCart {
 
     public void setMode(String mode) {
         this.mode = mode;
+    }
+
+    public ResponseUserCode getDeviceToken(){
+        return deviceToken;
     }
 }
