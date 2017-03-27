@@ -26,6 +26,9 @@ import com.company.zicure.payment.util.ToolbarManager;
 import com.company.zicure.payment.util.VarialableConnect;
 import com.squareup.otto.Subscribe;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import gallery.zicure.company.com.gallery.util.ResizeScreen;
@@ -53,6 +56,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     @Bind(R.id.title_logo)
     ImageView titleLogo;
 
+    private SharedPreferences pref = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,14 +68,30 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         setToolbar();
 
         if (savedInstanceState == null){
-
+            pref = getSharedPreferences(VarialableConnect.fileKey, Context.MODE_PRIVATE);
         }
     }
+
+    private void storeAuthToken(String authToken){
+        if (authToken != null){
+            pref = getSharedPreferences(VarialableConnect.fileKey , Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString( VarialableConnect.authTokenKey, authToken);
+            editor.commit();
+        }
+
+        checkAuthToken();
+    }
+
 
     @Override
     protected void onResume() {
         super.onResume();
-        checkAuthToken();
+
+        Intent intent = getIntent();
+        String authToken = intent.getStringExtra(Intent.EXTRA_TEXT);
+        storeAuthToken(authToken);
+        Toast.makeText(this, authToken, Toast.LENGTH_SHORT).show();
     }
 
     private void bindView(){
@@ -106,7 +127,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void checkAuthToken(){
-        SharedPreferences pref = getSharedPreferences(VarialableConnect.register, Context.MODE_PRIVATE);
+        pref = getSharedPreferences(VarialableConnect.fileKey, Context.MODE_PRIVATE);
         authToken = pref.getString(VarialableConnect.authTokenKey, null);
 
         if (authToken == null){
@@ -114,7 +135,28 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             showLoadingDialog();
             ClientHttp.getInstance(this).requestUserCode(VarialableConnect.clientID);
         }else{
+            validateCurrentDate();
+        }
+    }
 
+    private void validateCurrentDate(){
+        pref = getSharedPreferences(VarialableConnect.fileKey, Context.MODE_PRIVATE);
+        String expireCode = pref.getString(VarialableConnect.expireCodeKey, null);
+
+        try{
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            Date date = new Date();
+            Date strDate = dateFormat.parse(expireCode);
+
+            if (date.after(strDate)){
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.commit();
+            }else {
+                openActivity(MainActivity.class, true);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
         }
     }
 
@@ -125,9 +167,19 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             String code = getString(R.string.domain_code_th)+ " " + ModelCart.getInstance().getDeviceToken().getResult().getDeviceToken().getUserCode();
             txtCode.setText(code);
             Toast.makeText(this, ModelCart.getInstance().getDeviceToken().getResult().getDeviceToken().getUserCode() , Toast.LENGTH_SHORT).show();
+
+            //store user_code, expire_code
+            storeDeviceToken(ModelCart.getInstance().getDeviceToken().getResult().getDeviceToken().getUserCode(), ModelCart.getInstance().getDeviceToken().getResult().getDeviceToken().getUserCodeExpire());
         }
 
         dismissDialog();
+    }
+
+    private void storeDeviceToken(String authCode, String expireCode){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(VarialableConnect.authCodeKey, authCode);
+        editor.putString(VarialableConnect.expireCodeKey, expireCode);
+        editor.commit();
     }
 
     @Override
@@ -137,12 +189,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 finish();
                 break;
             }
+
             case R.id.btn_active:{
-                Intent intent = getPackageManager().getLaunchIntentForPackage("com.company.zicure.registerkey");
-                if (intent != null){
-                    intent.addCategory(Intent.CATEGORY_LAUNCHER);
-                    startActivity(intent);
-                }
+                finish();
                 break;
             }
         }
