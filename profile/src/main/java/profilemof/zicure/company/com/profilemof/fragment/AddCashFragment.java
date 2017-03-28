@@ -18,10 +18,10 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.zicure.company.com.model.util.ModelCart;
 
 import gallery.zicure.company.com.gallery.util.ResizeScreen;
 import profilemof.zicure.company.com.profilemof.R;
-import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -107,7 +107,7 @@ public class AddCashFragment extends Fragment{
         if (multiFormatWriter == null){
             multiFormatWriter = new MultiFormatWriter();
             try{
-                BitMatrix bitMatrix = multiFormatWriter.encode(ModelCartProfile.getInstance().getUser().getAccount(), BarcodeFormat.QR_CODE, width, height);
+                BitMatrix bitMatrix = multiFormatWriter.encode(ModelCart.getInstance().getModel().accountUserModel.accountNo, BarcodeFormat.QR_CODE, width, height);
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                 imgQrCode.setImageBitmap(bitmap);

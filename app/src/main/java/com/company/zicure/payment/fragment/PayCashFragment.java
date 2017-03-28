@@ -14,12 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.zicure.payment.activity.MainActivity;
-import com.company.zicure.payment.util.PermissionRequest;
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.network.ClientHttp;
-import com.company.zicure.payment.util.FormatCash;
-import com.company.zicure.payment.util.ModelCart;
 import com.google.zxing.Result;
+import com.zicure.company.com.model.util.FormatCash;
+import com.zicure.company.com.model.util.ModelCart;
+import com.zicure.company.com.model.util.PermissionRequest;
 
 import me.dm7.barcodescanner.zxing.ZXingScannerView;
 

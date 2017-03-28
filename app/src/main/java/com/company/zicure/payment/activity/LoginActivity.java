@@ -1,7 +1,6 @@
 package com.company.zicure.payment.activity;
 
 import android.app.Dialog;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -12,26 +11,27 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.common.BaseActivity;
-import com.company.zicure.payment.model.ResponseUserCode;
 import com.company.zicure.payment.network.ClientHttp;
-import com.company.zicure.payment.util.EventBusCart;
-import com.company.zicure.payment.util.ModelCart;
-import com.company.zicure.payment.util.ToolbarManager;
-import com.company.zicure.payment.util.VarialableConnect;
+import com.zicure.company.com.model.models.RequestRegister;
+import com.zicure.company.com.model.models.ResponseRegister;
+import com.zicure.company.com.model.models.ResponseUserCode;
+import com.zicure.company.com.model.util.EventBusCart;
 import com.squareup.otto.Subscribe;
+import com.zicure.company.com.model.util.ModelCart;
+import com.zicure.company.com.model.util.ResizeScreen;
+import com.zicure.company.com.model.util.ToolbarManager;
+import com.zicure.company.com.model.util.VarialableConnect;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import gallery.zicure.company.com.gallery.util.ResizeScreen;
 
 public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
@@ -76,7 +76,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         if (authToken != null){
             pref = getSharedPreferences(VarialableConnect.fileKey , Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
-            editor.putString( VarialableConnect.authTokenKey, authToken);
+            editor.putString(VarialableConnect.authTokenKey, authToken);
             editor.commit();
         }
 
@@ -87,7 +87,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onResume() {
         super.onResume();
+        initial();
+    }
 
+    private void initial(){
         Intent intent = getIntent();
         String authToken = intent.getStringExtra(Intent.EXTRA_TEXT);
         storeAuthToken(authToken);
@@ -135,28 +138,27 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             showLoadingDialog();
             ClientHttp.getInstance(this).requestUserCode(VarialableConnect.clientID);
         }else{
-            validateCurrentDate();
+            restoreAccount(authToken);
         }
     }
 
-    private void validateCurrentDate(){
+    private void restoreAccount(String authToken){
         pref = getSharedPreferences(VarialableConnect.fileKey, Context.MODE_PRIVATE);
-        String expireCode = pref.getString(VarialableConnect.expireCodeKey, null);
+        String account = pref.getString(VarialableConnect.accountKey, null);
 
-        try{
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            Date date = new Date();
-            Date strDate = dateFormat.parse(expireCode);
+        if (account != null){
+            Bundle bundle = new Bundle();
+            bundle.putString(VarialableConnect.accountKey, account);
+            openActivity(MainActivity.class, bundle, true);
+        }else{
+            RequestRegister.DeviceTokenBean deviceToken = new RequestRegister.DeviceTokenBean();
+            deviceToken.setAuth_token(authToken);
 
-            if (date.after(strDate)){
-                SharedPreferences.Editor editor = pref.edit();
-                editor.clear();
-                editor.commit();
-            }else {
-                openActivity(MainActivity.class, true);
-            }
-        }catch (Exception e){
-            e.printStackTrace();
+            RequestRegister request = new RequestRegister();
+            request.setDeviceToken(deviceToken);
+
+            showLoadingDialog();
+            ClientHttp.getInstance(this).requestAccount(request);
         }
     }
 
@@ -166,12 +168,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             ModelCart.getInstance().getDeviceToken().setResult(response.getResult());
             String code = getString(R.string.domain_code_th)+ " " + ModelCart.getInstance().getDeviceToken().getResult().getDeviceToken().getUserCode();
             txtCode.setText(code);
-            Toast.makeText(this, ModelCart.getInstance().getDeviceToken().getResult().getDeviceToken().getUserCode() , Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, ModelCart.getInstance().getDeviceToken().getResult().getSuccess() , Toast.LENGTH_SHORT).show();
 
             //store user_code, expire_code
             storeDeviceToken(ModelCart.getInstance().getDeviceToken().getResult().getDeviceToken().getUserCode(), ModelCart.getInstance().getDeviceToken().getResult().getDeviceToken().getUserCodeExpire());
         }
-
         dismissDialog();
     }
 
@@ -180,6 +181,32 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         editor.putString(VarialableConnect.authCodeKey, authCode);
         editor.putString(VarialableConnect.expireCodeKey, expireCode);
         editor.commit();
+    }
+
+    @Subscribe
+    public void onEventRegister(ResponseRegister response){
+        if (response.getResult().getCode().equalsIgnoreCase("SUCCESS")){
+            storeAccount(response.getResult().getAccount_no());
+            dismissDialog();
+        }else{
+            Toast.makeText(this, response.getResult().getDescription(), Toast.LENGTH_SHORT).show();
+            SharedPreferences.Editor editor = pref.edit();
+            editor.clear();
+            editor.commit();
+
+            showLoadingDialog();
+            ClientHttp.getInstance(this).requestUserCode(VarialableConnect.clientID);
+        }
+    }
+
+    private void storeAccount(String account){
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(VarialableConnect.accountKey, account);
+        editor.commit();
+
+        Bundle bundle = new Bundle();
+        bundle.putString(VarialableConnect.accountKey, account);
+        openActivity(MainActivity.class, bundle, true);
     }
 
     @Override

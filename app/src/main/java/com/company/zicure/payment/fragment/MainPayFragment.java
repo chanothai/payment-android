@@ -24,18 +24,18 @@ import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.adapters.StatementAdapter;
 import com.company.zicure.payment.interfaces.ItemClickListener;
-import com.company.zicure.payment.model.AccountUserModel;
-import com.company.zicure.payment.model.RequestTokenModel;
-import com.company.zicure.payment.model.ResponseStatement;
 import com.company.zicure.payment.network.ClientHttp;
-import com.company.zicure.payment.util.FormatCash;
-import com.company.zicure.payment.util.ModelCart;
 import com.company.zicure.survey.activity.SurveyActivity;
 import com.company.zicure.survey.models.QuestionRequest;
 import com.company.zicure.survey.utilize.ModelCartSurvey;
 
 import com.google.gson.Gson;
 import com.joooonho.SelectableRoundedImageView;
+import com.zicure.company.com.model.models.AccountUserModel;
+import com.zicure.company.com.model.models.RequestTokenModel;
+import com.zicure.company.com.model.models.ResponseStatement;
+import com.zicure.company.com.model.util.FormatCash;
+import com.zicure.company.com.model.util.ModelCart;
 
 import java.util.ArrayList;
 

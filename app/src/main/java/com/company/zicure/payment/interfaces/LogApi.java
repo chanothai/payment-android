@@ -1,14 +1,15 @@
 package com.company.zicure.payment.interfaces;
 
-import com.company.zicure.payment.model.AccountUserModel;
-import com.company.zicure.payment.model.RequestTokenModel;
-import com.company.zicure.payment.model.ResponseBalance;
-import com.company.zicure.payment.model.ResponseQRCode;
-import com.company.zicure.payment.model.ResponseScanQR;
-import com.company.zicure.payment.model.ResponseStatement;
-import com.company.zicure.payment.model.ResponseTokenModel;
-import com.company.zicure.payment.model.ResponseUserCode;
-import com.company.zicure.payment.store.StoreAccount;
+import com.zicure.company.com.model.models.AccountUserModel;
+import com.zicure.company.com.model.models.RequestRegister;
+import com.zicure.company.com.model.models.RequestTokenModel;
+import com.zicure.company.com.model.models.ResponseBalance;
+import com.zicure.company.com.model.models.ResponseQRCode;
+import com.zicure.company.com.model.models.ResponseRegister;
+import com.zicure.company.com.model.models.ResponseScanQR;
+import com.zicure.company.com.model.models.ResponseStatement;
+import com.zicure.company.com.model.models.ResponseTokenModel;
+import com.zicure.company.com.model.models.ResponseUserCode;
 
 import java.util.Map;
 
@@ -40,4 +41,7 @@ public interface LogApi {
 
     @GET("Api/getDeviceToken.json")
     Call<ResponseUserCode> genUserCode(@QueryMap Map<String, String> ClientID);
+
+    @POST("e-money-client/Registers")
+    Call<ResponseRegister> requestAccount(@Body RequestRegister requestRegister);
 }

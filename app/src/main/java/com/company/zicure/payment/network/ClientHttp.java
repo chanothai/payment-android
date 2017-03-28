@@ -5,23 +5,23 @@ import android.util.Log;
 
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.interfaces.LogApi;
-import com.company.zicure.payment.model.AccountUserModel;
-import com.company.zicure.payment.model.RequestTokenModel;
-import com.company.zicure.payment.model.ResponseBalance;
-import com.company.zicure.payment.model.ResponseQRCode;
-import com.company.zicure.payment.model.ResponseScanQR;
-import com.company.zicure.payment.model.ResponseStatement;
-import com.company.zicure.payment.model.ResponseTokenModel;
-import com.company.zicure.payment.model.ResponseUserCode;
-import com.company.zicure.payment.store.StoreAccount;
-import com.company.zicure.payment.util.EventBusCart;
-import com.company.zicure.payment.util.VarialableConnect;
+import com.google.gson.GsonBuilder;
+import com.zicure.company.com.model.models.AccountUserModel;
+import com.zicure.company.com.model.models.RequestRegister;
+import com.zicure.company.com.model.models.RequestTokenModel;
+import com.zicure.company.com.model.models.ResponseBalance;
+import com.zicure.company.com.model.models.ResponseQRCode;
+import com.zicure.company.com.model.models.ResponseRegister;
+import com.zicure.company.com.model.models.ResponseScanQR;
+import com.zicure.company.com.model.models.ResponseStatement;
+import com.zicure.company.com.model.models.ResponseTokenModel;
+import com.zicure.company.com.model.models.ResponseUserCode;
+import com.zicure.company.com.model.util.EventBusCart;
 import com.google.gson.Gson;
+import com.zicure.company.com.model.util.VarialableConnect;
 
 import java.util.HashMap;
 
-import okhttp3.OkHttpClient;
-import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -38,6 +38,7 @@ public class ClientHttp {
 
     private final String LOGAPI = "API_RESPONSE";
     private String jsonStr;
+    private Gson gson = null;
 
     private Retrofit retrofit = null;
     private LogApi service = null;
@@ -46,6 +47,7 @@ public class ClientHttp {
         this.context = context;
         retrofit = RetrofitAPI.newInstance(VarialableConnect.urlServerPayment).getRetrofit();
         service = retrofit.create(LogApi.class);
+        gson = new GsonBuilder().disableHtmlEscaping().create();
     }
 
     public static ClientHttp getInstance(Context context){
@@ -188,6 +190,28 @@ public class ClientHttp {
 
             @Override
             public void onFailure(Call<ResponseUserCode> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void requestAccount(RequestRegister requestRegister){
+        Log.d("Account", gson.toJson(requestRegister));
+        Call<ResponseRegister> register = service.requestAccount(requestRegister);
+        register.enqueue(new Callback<ResponseRegister>() {
+            @Override
+            public void onResponse(Call<ResponseRegister> call, Response<ResponseRegister> response) {
+                try{
+                    if (response.body() != null){
+                        EventBusCart.getInstance().getEventBus().post(response.body());
+                    }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseRegister> call, Throwable t) {
                 t.printStackTrace();
             }
         });

@@ -11,6 +11,7 @@
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/bottom-bar" />
             <option value="$PROJECT_DIR$/gallery" />
+            <option value="$PROJECT_DIR$/model" />
             <option value="$PROJECT_DIR$/profile" />
             <option value="$PROJECT_DIR$/survey" />
           </set>

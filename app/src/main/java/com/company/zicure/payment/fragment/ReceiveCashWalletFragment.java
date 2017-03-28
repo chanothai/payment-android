@@ -27,9 +27,8 @@ import android.widget.TextView;
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.network.ClientHttp;
-import com.company.zicure.payment.util.FormatCash;
-import com.company.zicure.payment.util.ModelCart;
 import com.joooonho.SelectableRoundedImageView;
+import com.zicure.company.com.model.util.ModelCart;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gallery.zicure.company.com.gallery.util.ResizeScreen;

@@ -14,8 +14,8 @@ import android.widget.TextView;
 
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.R;
-import com.company.zicure.payment.util.FormatCash;
-import com.company.zicure.payment.util.ModelCart;
+import com.zicure.company.com.model.util.FormatCash;
+import com.zicure.company.com.model.util.ModelCart;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;

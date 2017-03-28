@@ -34,6 +34,7 @@
             android:name=".activity.MainActivity"
             android:screenOrientation="portrait">
         </activity>
+
         <activity
             android:name="com.company.zicure.survey.activity.SurveyActivity"
             android:screenOrientation="portrait" />

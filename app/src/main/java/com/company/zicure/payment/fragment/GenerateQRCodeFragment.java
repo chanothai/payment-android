@@ -19,14 +19,13 @@ import android.widget.TextView;
 
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.R;
-import com.company.zicure.payment.util.FormatCash;
-import com.company.zicure.payment.util.ModelCart;
-import com.company.zicure.payment.util.NextzyUtil;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.journeyapps.barcodescanner.BarcodeEncoder;
+import com.zicure.company.com.model.util.FormatCash;
+import com.zicure.company.com.model.util.NextzyUtil;
 
 import gallery.zicure.company.com.gallery.util.ResizeScreen;
 

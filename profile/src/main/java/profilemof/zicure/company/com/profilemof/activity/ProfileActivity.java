@@ -8,7 +8,6 @@ import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -19,8 +18,10 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.joooonho.SelectableRoundedImageView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.zicure.company.com.model.util.ResizeScreen;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import gallery.zicure.company.com.gallery.util.PermissionKeyNumber;
@@ -29,8 +30,6 @@ import profilemof.zicure.company.com.profilemof.R;
 import profilemof.zicure.company.com.profilemof.adapter.ViewPagerAdapter;
 import profilemof.zicure.company.com.profilemof.fragment.AddCashFragment;
 import profilemof.zicure.company.com.profilemof.fragment.UserDetailFragment;
-import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
-import profilemof.zicure.company.com.profilemof.utilize.ResizeScreen;
 
 public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTabSelectedListener, View.OnClickListener{
     private Toolbar toolbar = null;
@@ -106,14 +105,7 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     private void setImgProfile(){
         try{
             imgEditProfile.setImageResource(R.drawable.ic_google_images);
-            if (ModelCartProfile.getInstance().getUser().getAccount().equals(getString(R.string.account1))){
-                imgProfile.setImageResource(R.drawable.base);
-                accountProfile.setText(getString(R.string.account1));
-            }
-            else if (ModelCartProfile.getInstance().getUser().getAccount().equals(getString(R.string.account2))){
-                imgProfile.setImageResource(R.drawable.yajai);
-                accountProfile.setText(getString(R.string.account2));
-            }
+
         }catch (NullPointerException e){
             imgProfile.setImageResource(R.mipmap.ic_launcher);
             accountProfile.setText("");

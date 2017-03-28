@@ -9,9 +9,8 @@ import android.widget.TextView;
 
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.interfaces.ItemClickListener;
-import com.company.zicure.payment.model.ResponseStatement;
-import com.company.zicure.payment.util.ModelCart;
 import com.joooonho.SelectableRoundedImageView;
+import com.zicure.company.com.model.util.ModelCart;
 
 import java.util.ArrayList;
 

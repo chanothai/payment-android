@@ -1,22 +1,16 @@
 package com.company.zicure.payment.activity;
 
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.content.res.TypedArray;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.View;
-import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,26 +20,24 @@ import com.company.zicure.payment.fragment.GenerateQRCodeFragment;
 import com.company.zicure.payment.fragment.MainPayFragment;
 import com.company.zicure.payment.fragment.PayResultFragment;
 import com.company.zicure.payment.fragment.PayCashFragment;
-import com.company.zicure.payment.fragment.ReceiveCashFragment;
-import com.company.zicure.payment.model.RequestTokenModel;
-import com.company.zicure.payment.model.ResponseBalance;
-import com.company.zicure.payment.model.ResponseQRCode;
-import com.company.zicure.payment.model.ResponseScanQR;
-import com.company.zicure.payment.model.ResponseStatement;
-import com.company.zicure.payment.model.ResponseTokenModel;
 import com.company.zicure.payment.network.ClientHttp;
-import com.company.zicure.payment.store.StoreAccount;
-import com.company.zicure.payment.util.EventBusCart;
-import com.company.zicure.payment.util.FormatCash;
-import com.company.zicure.payment.util.ModelCart;
-import com.company.zicure.payment.util.ToolbarManager;
-import com.company.zicure.payment.util.VarialableConnect;
+import com.zicure.company.com.model.models.RequestTokenModel;
+import com.zicure.company.com.model.models.ResponseBalance;
+import com.zicure.company.com.model.models.ResponseQRCode;
+import com.zicure.company.com.model.models.ResponseScanQR;
+import com.zicure.company.com.model.models.ResponseStatement;
+import com.zicure.company.com.model.models.ResponseTokenModel;
+import com.zicure.company.com.model.store.StoreAccount;
+import com.zicure.company.com.model.util.EventBusCart;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
+import com.zicure.company.com.model.util.FormatCash;
+import com.zicure.company.com.model.util.ModelCart;
+import com.zicure.company.com.model.util.ToolbarManager;
+import com.zicure.company.com.model.util.VarialableConnect;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import profilemof.zicure.company.com.profilemof.utilize.ModelCartProfile;
 
 public class MainActivity extends BaseActivity {
 
@@ -73,11 +65,13 @@ public class MainActivity extends BaseActivity {
         setContentView(R.layout.activity_main);
         EventBusCart.getInstance().getEventBus().register(this);
         ButterKnife.bind(this);
+        setToolbar();
 
         if (savedInstanceState == null){
-            accountUser = VarialableConnect.account;
-            ModelCartProfile.getInstance().getUser().setAccount(accountUser);
-            setToolbar();
+            SharedPreferences pref = getSharedPreferences(VarialableConnect.fileKey, Context.MODE_PRIVATE);
+            accountUser = pref.getString(VarialableConnect.accountKey, null);
+
+            ModelCart.getInstance().getModel().accountUserModel.accountNo = accountUser;
         }
     }
 
@@ -158,7 +152,6 @@ public class MainActivity extends BaseActivity {
         getModel().option = statement.getResult();
         Log.d("Statement", new Gson().toJson(getModel().option));
 
-        ModelCart.getInstance().getModel().accountUserModel.accountNo = accountUser;
         //Call statement for show
         FragmentManager fm = getSupportFragmentManager();
         MainPayFragment fragment = (MainPayFragment)fm.findFragmentByTag(getString(R.string.tagMainPayFragment));
@@ -167,16 +160,18 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe
     public void onEventBalance(ResponseBalance balance){
-        ResponseBalance.Result result = balance.getResult();
-        Log.d("Balance", new Gson().toJson(balance));
-        if (balance != null){
+        try{
+            ResponseBalance.Result result = balance.getResult();
+            Log.d("Balance", new Gson().toJson(balance));
             if (!result.getBalance().isEmpty()){
                 String currentBalance = setFormatCash(result.getBalance());
                 amountCash.setText(currentBalance);
                 ModelCart.getInstance().getModel().accountUserModel.balance = result.getBalance();
             }
-            dismissDialog();
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
+        dismissDialog();
     }
 
     @Subscribe

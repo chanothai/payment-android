@@ -100,6 +100,4 @@ public class ReceiveCashFragment extends Fragment {
     private void resizeView(){
 
     }
-
-
 }
