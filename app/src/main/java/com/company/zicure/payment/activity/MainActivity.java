@@ -3,11 +3,13 @@ package com.company.zicure.payment.activity;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.PowerManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.widget.ImageView;
@@ -15,19 +17,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.zicure.payment.R;
-import com.company.zicure.payment.common.BaseActivity;
 import com.company.zicure.payment.fragment.GenerateQRCodeFragment;
 import com.company.zicure.payment.fragment.MainPayFragment;
 import com.company.zicure.payment.fragment.PayResultFragment;
 import com.company.zicure.payment.fragment.PayCashFragment;
 import com.company.zicure.payment.network.ClientHttp;
+import com.zicure.company.com.model.common.BaseActivity;
+import com.zicure.company.com.model.models.AccountUser;
 import com.zicure.company.com.model.models.RequestTokenModel;
 import com.zicure.company.com.model.models.ResponseBalance;
+import com.zicure.company.com.model.models.ResponseProfile;
 import com.zicure.company.com.model.models.ResponseQRCode;
 import com.zicure.company.com.model.models.ResponseScanQR;
-import com.zicure.company.com.model.models.ResponseStatement;
 import com.zicure.company.com.model.models.ResponseTokenModel;
-import com.zicure.company.com.model.store.StoreAccount;
 import com.zicure.company.com.model.util.EventBusCart;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
@@ -39,7 +41,7 @@ import com.zicure.company.com.model.util.VarialableConnect;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener{
 
     @Bind(R.id.amount_cash)
     TextView amountCash;
@@ -54,11 +56,16 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.title_logo)
     ImageView titleLogo;
 
+    //Refresh
+    @Bind(R.id.refresh_main)
+    SwipeRefreshLayout refreshMain;
+
     //Fragment
     private ObjectAnimator rotationLogo = null;
 
     private double amount;
     private String accountUser;
+    private String clearStack = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,21 +74,53 @@ public class MainActivity extends BaseActivity {
         ButterKnife.bind(this);
         setToolbar();
 
+        appBarLayout.setKeepScreenOn(true);
         if (savedInstanceState == null){
-            SharedPreferences pref = getSharedPreferences(VarialableConnect.fileKey, Context.MODE_PRIVATE);
-            accountUser = pref.getString(VarialableConnect.accountKey, null);
-
-            ModelCart.getInstance().getModel().accountUserModel.accountNo = accountUser;
+            //initial stack
+            Bundle bundle = getIntent().getExtras();
+            String accounted = bundle.getString(VarialableConnect.accountKey);
+            clearStack = bundle.getString(VarialableConnect.clearStack);
+            if (accounted != null){
+                accountUser = accounted;
+            }else{
+                SharedPreferences pref = getSharedPreferences(VarialableConnect.fileKey, Context.MODE_PRIVATE);
+                accountUser = pref.getString(VarialableConnect.accountKey, null);
+            }
         }
     }
+
+    public void callUserInfo(){
+        RequestTokenModel tokenModel = new RequestTokenModel();
+        tokenModel.setAccountNo(ModelCart.getInstance().getToken().getResult().getAccountNo());
+        tokenModel.setToken(ModelCart.getInstance().getToken().getResult().getToken());
+
+        ClientHttp.getInstance(this).requestUserInfo(tokenModel);
+    }
+
 
     private void setToolbar(){
         ToolbarManager toolbarManager = new ToolbarManager(this);
         toolbarManager.setToolbar(toolbarMenu, titleToolbar, getString(R.string.app_name));
         toolbarManager.setAppbarLayout(appBarLayout);
+
+        //set swipe refresh
+        refreshMain.setOnRefreshListener(this);
+        refreshMain.setColorSchemeColors(
+                getResources().getColor(android.R.color.holo_blue_bright),
+                getResources().getColor(android.R.color.holo_green_light),
+                getResources().getColor(android.R.color.holo_orange_light),
+                getResources().getColor(android.R.color.holo_red_light));
     }
 
     private void getFirstToken(){
+        if (accountUser != null){
+            ModelCart.getInstance().getAccountUser().accountNo = accountUser;
+        }else{
+            SharedPreferences pref = getSharedPreferences(VarialableConnect.fileKey, Context.MODE_PRIVATE);
+            accountUser = pref.getString(VarialableConnect.accountKey, null);
+            ModelCart.getInstance().getAccountUser().accountNo = accountUser;
+        }
+
         showLoadingDialog();
         RequestTokenModel tokenModelBuyer = new RequestTokenModel();
         tokenModelBuyer.setAccountNo(accountUser);
@@ -89,39 +128,57 @@ public class MainActivity extends BaseActivity {
     }
 
     public void callMainPayFragment(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, MainPayFragment.newInstance(accountUser, getModel().accountUserModel.token),getString(R.string.tagMainPayFragment));
-        transaction.commit();
+        try {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, MainPayFragment.newInstance(accountUser, ModelCart.getInstance().getToken().getResult().getToken()), getString(R.string.tagMainPayFragment));
+            transaction.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void callPayCashFragment(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, PayCashFragment.newInstance("",""));
-        transaction.addToBackStack(getString(R.string.tag_receive_qr_card));
-        transaction.commit();
+        try {
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, PayCashFragment.newInstance("",""),getString(R.string.tagScanQRFragment));
+            transaction.addToBackStack(getString(R.string.tag_receive_qr_card));
+            transaction.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     public void callGenerateQRCodeFragment(String qrcode){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, GenerateQRCodeFragment.newInstance(String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount),qrcode));
-        transaction.addToBackStack(getString(R.string.tag_show_qrcode));
-        transaction.commit();
+        try{
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, GenerateQRCodeFragment.newInstance(String.valueOf(ModelCart.getInstance().getAccountUser().amount),qrcode));
+            transaction.addToBackStack(getString(R.string.tag_show_qrcode));
+            transaction.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
     }
 
     public void callPayResultFragment(){
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container, PayResultFragment.newInstance(getModel().accountUserModel.type, String.valueOf(ModelCart.getInstance().getModel().accountUserModel.amount)));
-        transaction.addToBackStack(null);
-        transaction.commit();
+        try{
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.container, PayResultFragment.newInstance(ModelCart.getInstance().getAccountUser().type, String.valueOf(ModelCart.getInstance().getAccountUser().amount)));
+            transaction.addToBackStack(null);
+            transaction.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private String setFormatCash(String balance){
-        amount = Double.parseDouble(balance);
-        return FormatCash.newInstance().setFormatCash(amount);
-    }
-
-    private StoreAccount getModel(){
-        return ModelCart.getInstance().getModel();
+        try{
+            amount = Double.parseDouble(balance);
+            return FormatCash.newInstance().setFormatCash(amount);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public void setIntent(Class<?> nameClass, int overrideTransitionIn, int overrideTransitionOut){
@@ -132,62 +189,83 @@ public class MainActivity extends BaseActivity {
     public void setBalance(){
         RequestTokenModel tokenModel = new RequestTokenModel();
         tokenModel.setAccountNo(accountUser);
-        tokenModel.setToken(getModel().accountUserModel.token);
+        tokenModel.setToken(ModelCart.getInstance().getAccountUser().token);
 
-        if (getModel().accountUserModel.balance != null){
-            String str1 = setFormatCash(getModel().accountUserModel.balance);
-            String str2 =   amountCash.getText().toString();
-
+        if (ModelCart.getInstance().getAccountUser().balance != null){
             ClientHttp.getInstance(this).requestBalance(tokenModel);
-            if (!str1.equalsIgnoreCase(str2)){
-
-            }
         }else{//Load balance First time
             ClientHttp.getInstance(this).requestBalance(tokenModel);
         }
     }
 
     @Subscribe
-    public void onEventStatement(ResponseStatement statement){
-        getModel().option = statement.getResult();
-        Log.d("Statement", new Gson().toJson(getModel().option));
-
-        //Call statement for show
-        FragmentManager fm = getSupportFragmentManager();
-        MainPayFragment fragment = (MainPayFragment)fm.findFragmentByTag(getString(R.string.tagMainPayFragment));
-        fragment.setAdapterStatement();
-    }
-
-    @Subscribe
     public void onEventBalance(ResponseBalance balance){
         try{
-            ResponseBalance.Result result = balance.getResult();
-            Log.d("Balance", new Gson().toJson(balance));
-            if (!result.getBalance().isEmpty()){
-                String currentBalance = setFormatCash(result.getBalance());
-                amountCash.setText(currentBalance);
-                ModelCart.getInstance().getModel().accountUserModel.balance = result.getBalance();
+            if (!balance.getResult().getBalance().isEmpty()){
+                if (ModelCart.getInstance().getAccountUser().balance == null){
+                    ModelCart.getInstance().getAccountUser().balance = balance.getResult().getBalance();
+                }
+
+                final String resultBalance = balance.getResult().getBalance()+ " " + getString(R.string.cash_thai);
+                if (ModelCart.getInstance().getAccountUser().balance.equalsIgnoreCase(balance.getResult().getBalance())){
+                    getSupportFragmentManager().popBackStack(getString(R.string.tag_show_qrcode), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                }else{
+                    callPayResultFragment();
+                    amountCash.setText(resultBalance);
+                    ModelCart.getInstance().getAccountUser().balance = balance.getResult().getBalance();
+                }
             }
-        }catch (NullPointerException e){
+        }catch (Exception e){
             e.printStackTrace();
+            String resultBanalnce = setFormatCash("0 " + getString(R.string.cash_thai));
+            amountCash.setText(resultBanalnce);
         }
         dismissDialog();
     }
 
     @Subscribe
-    public void onEventReponseToken(ResponseTokenModel tokenModel){
-        ResponseTokenModel.Result result = tokenModel.getResult();
+    public void onEventUserInfo(ResponseProfile response){
+        try {
+            if (response.getResult() != null){
+                ModelCart.getInstance().getUserInfo().setResult(response.getResult());
+                ModelCart.getInstance().getAccountUser().balance = response.getResult().getBalance();
+            }
 
-        Log.d("Token", new Gson().toJson(tokenModel));
-        if (!result.getToken().isEmpty()){
-            //Store Data
-            ModelCart.getInstance().getModel().accountUserModel.token = result.getToken();
-            ModelCart.getInstance().getModel().accountUserModel.accountNo = result.getAccountNo();
+            if (!response.getResult().getBalance().isEmpty()){
+                amountCash.setText(ModelCart.getInstance().getUserInfo().getResult().getBalance() + " " + getString(R.string.cash_thai));
+            }
 
-            //get balance
-            setBalance();
             //set first page
+            checkPage();
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
+
+        refreshMain.setRefreshing(false);
+        dismissDialog();
+    }
+
+    private void checkPage(){
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
             callMainPayFragment();
+        }
+    }
+
+    @Subscribe
+    public void onEventReponseToken(ResponseTokenModel tokenModel){
+        try{
+            ResponseTokenModel.Result result = tokenModel.getResult();
+            Log.d("Token", new Gson().toJson(tokenModel));
+            if (!result.getToken().isEmpty()){
+                //Store Data
+                ModelCart.getInstance().getToken().setResult(tokenModel.getResult());
+                ModelCart.getInstance().getAccountUser().token = tokenModel.getResult().getToken();
+                callUserInfo();
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+            getFirstToken();
         }
     }
 
@@ -195,13 +273,14 @@ public class MainActivity extends BaseActivity {
     public void onEventReceiveCash(ResponseQRCode qrCode){
         try{
             ResponseQRCode.Result result = qrCode.getResult();
+            ModelCart.getInstance().getQRcode().setResult(result);
 
             if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_wallet))){
                 callGenerateQRCodeFragment(result.getUrlQRCode());
             }
 
             else if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_qrcard))){
-                ModelCart.getInstance().getModel().accountUserModel.code = result.getUrlQRCode();
+                ModelCart.getInstance().getAccountUser().code = qrCode.getResult().getUrlQRCode();
                 callPayCashFragment();
             }
 
@@ -219,6 +298,7 @@ public class MainActivity extends BaseActivity {
         Log.d("Paycash", new Gson().toJson(scanQR));
         try {
             if (result.getCode().equalsIgnoreCase("SUCCESS")){
+                ModelCart.getInstance().getResponseScanQR().setResult(scanQR.getResult());
                 callPayResultFragment();
                 Toast.makeText(getApplicationContext(), result.getCode(), Toast.LENGTH_SHORT).show();
             }else{
@@ -226,18 +306,20 @@ public class MainActivity extends BaseActivity {
                 callCamera();
             }
             //reset user because it changed user to receive cash qr card before
-            ModelCart.getInstance().getModel().accountUserModel.accountNo = accountUser;
-            dismissDialog();
+            ModelCart.getInstance().getAccountUser().accountNo = accountUser;
         }catch (NullPointerException e){
             e.printStackTrace();
-            dismissDialog();
+            callCamera();
         }
+
+        dismissDialog();
     }
 
-    private void callCamera(){
+    public void callCamera(){
         FragmentManager fm = getSupportFragmentManager();
         PayCashFragment fragment = (PayCashFragment)fm.findFragmentByTag(getString(R.string.tagScanQRFragment));
         fragment.qrScanner();
+        fragment.resumeCamera();
     }
 
 
@@ -297,5 +379,15 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         EventBusCart.getInstance().getEventBus().unregister(this);
+    }
+
+    @Override
+    public void onRefresh() {
+        if (ModelCart.getInstance().getAccountUser().token != null){
+            showLoadingDialog();
+            callUserInfo();
+        }else{
+            getFragmentManager();
+        }
     }
 }

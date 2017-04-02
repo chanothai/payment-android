@@ -5,8 +5,6 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -22,7 +20,6 @@ import android.widget.TextView;
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.network.ClientHttp;
-import com.joooonho.SelectableRoundedImageView;
 import com.zicure.company.com.model.util.ModelCart;
 
 import gallery.zicure.company.com.gallery.util.ResizeScreen;
@@ -124,10 +121,11 @@ public class ReceiveCashQrCardFragment extends Fragment implements EditText.OnEd
         switch (actionID){
             case EditorInfo.IME_ACTION_NEXT:
                 if (!editCash.getText().toString().trim().isEmpty()){
-                    ((MainActivity)getActivity()).showLoadingDialog();
                     ModelCart.getInstance().setMode(getString(R.string.txt_qrcard));
-                    ModelCart.getInstance().getModel().accountUserModel.amount = Double.parseDouble(editCash.getText().toString().trim());
-                    ClientHttp.getInstance(getActivity()).requestPay(ModelCart.getInstance().getModel().accountUserModel);
+                    ModelCart.getInstance().getAccountUser().amount = editCash.getText().toString().trim();
+
+                    ((MainActivity)getActivity()).showLoadingDialog();
+                    ClientHttp.getInstance(getActivity()).requestPay(ModelCart.getInstance().getAccountUser());
                     closeKeyBoard();
                 }
                 break;

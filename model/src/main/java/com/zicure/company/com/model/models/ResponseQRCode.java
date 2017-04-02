@@ -21,7 +21,7 @@ public class ResponseQRCode {
     public static class Result {
         @SerializedName("token")
         private String token;
-        @SerializedName("code")
+        @SerializedName("transaction_ref")
         private String urlQRCode;
         @SerializedName("amount")
         private String amount;

@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.zicure.company.com.model.util.ModelCart;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,11 +19,9 @@ import profilemof.zicure.company.com.profilemof.R;
 
 public abstract class UserDetailAdapter extends RecyclerView.Adapter<UserDetailAdapter.UserDetailHolder> {
     private List<String> listTopic = null;
-    private List<String> listContent = null;
 
-    public UserDetailAdapter(ArrayList<String> listTopic, ArrayList<String> listContent){
+    public UserDetailAdapter(ArrayList<String> listTopic){
         this.listTopic = listTopic;
-        this.listContent = listContent;
     }
 
     @Override
@@ -34,10 +34,6 @@ public abstract class UserDetailAdapter extends RecyclerView.Adapter<UserDetailA
 
     public String getTopic(int position){
         return listTopic.get(position);
-    }
-
-    public String getContent(int position){
-        return listContent.get(position);
     }
 
     @Override

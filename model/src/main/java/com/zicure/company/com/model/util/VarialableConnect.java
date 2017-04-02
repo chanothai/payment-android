@@ -5,11 +5,6 @@ package com.zicure.company.com.model.util;
  */
 
 public class VarialableConnect {
-    public static String account1 = "000000000000000001";
-    public static String account2 = "000000000000000002";
-
-    public static String account = "000000000000000002";
-
     public static String clientID = "abcdef";
 
     //store file
@@ -27,4 +22,5 @@ public class VarialableConnect {
 
     //key intent
     public static String authCode = "auth_code";
+    public static String clearStack = "clear_stack";
 }

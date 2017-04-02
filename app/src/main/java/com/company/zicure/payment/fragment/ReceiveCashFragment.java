@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.adapters.ViewPagerReceiveCashAdapter;
+import com.zicure.company.com.model.util.ModelCart;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -87,6 +88,20 @@ public class ReceiveCashFragment extends Fragment {
             setupViewPager(pagerReceiveCash);
             tabChooseReceiveCash.setupWithViewPager(pagerReceiveCash);
             resizeView();
+
+            initialTab();
+        }
+    }
+
+    private void initialTab(){
+        TabLayout.Tab tab = null;
+        if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_wallet))){
+            tab = tabChooseReceiveCash.getTabAt(0);
+            tab.select();
+        }
+        else {
+            tab = tabChooseReceiveCash.getTabAt(1);
+            tab.select();
         }
     }
 

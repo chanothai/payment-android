@@ -152,10 +152,12 @@ public class GenerateQRCodeFragment extends Fragment implements View.OnClickList
     public void onDestroy() {
         super.onDestroy();
         countDownTimer.cancel();
+
     }
 
     @Override
     public void onClick(View view) {
-        ((MainActivity)getActivity()).callPayResultFragment();
+        ((MainActivity)getActivity()).showLoadingDialog();
+        ((MainActivity)getActivity()).setBalance();
     }
 }

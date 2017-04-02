@@ -12,7 +12,6 @@ import android.widget.Toast;
 
 import com.company.zicure.survey.R;
 import com.company.zicure.survey.adapter.QuestionViewPagerAdapter;
-import com.company.zicure.survey.common.BaseActivity;
 import com.company.zicure.survey.models.AnswerRequest;
 import com.company.zicure.survey.models.AnswerResponse;
 import com.company.zicure.survey.models.QuestionResponse;
@@ -22,6 +21,7 @@ import com.company.zicure.survey.utilize.EventBusCart;
 import com.company.zicure.survey.utilize.ModelCartSurvey;
 import com.google.gson.Gson;
 import com.squareup.otto.Subscribe;
+import com.zicure.company.com.model.common.BaseActivity;
 
 public class SurveyActivity extends BaseActivity implements View.OnClickListener, ViewPager.OnPageChangeListener {
 

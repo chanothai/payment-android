@@ -19,8 +19,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joooonho.SelectableRoundedImageView;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.zicure.company.com.model.util.ModelCart;
 import com.zicure.company.com.model.util.ResizeScreen;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -105,7 +107,13 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     private void setImgProfile(){
         try{
             imgEditProfile.setImageResource(R.drawable.ic_google_images);
+            Glide.with(this)
+                    .load(ModelCart.getInstance().getUserInfo().getResult().getCustomer().getImage_path())
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .centerCrop()
+                    .into(imgProfile);
 
+            accountProfile.setText(ModelCart.getInstance().getToken().getResult().getAccountNo());
         }catch (NullPointerException e){
             imgProfile.setImageResource(R.mipmap.ic_launcher);
             accountProfile.setText("");
@@ -194,8 +202,8 @@ public class ProfileActivity extends AppCompatActivity implements TabLayout.OnTa
     @Override
     public void onClick(View view) {
         if (view.getId() == R.id.img_edit_profile){
-            DialogSelectGallery dialog = new DialogSelectGallery(this);
-            dialog.showDialog();
+//            DialogSelectGallery dialog = new DialogSelectGallery(this);
+//            dialog.showDialog();
         }
     }
 }

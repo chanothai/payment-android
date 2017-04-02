@@ -28,14 +28,16 @@ task clean(type: Delete) {
 ext {
     compileSdkVersion = 25
     buildToolsVersion = "25.0.1"
-    minSdkVersion = 19
-    targetSdkVersion = 24
+    minSdkVersion = 21
+    targetSdkVersion = 25
 
-    supportLibraryVersion = "25.3.0"
+    supportLibraryVersion = "25.3.1"
 
     junitVersion = "4.12"
 
     gsonVersion = "2.7"
 
     versionGooglePlayService = "9.4.0"
+    versionName = "1.0.1"
+    versionCode = 2
 }

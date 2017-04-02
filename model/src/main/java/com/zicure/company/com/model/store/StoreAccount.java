@@ -1,7 +1,7 @@
 package com.zicure.company.com.model.store;
 
 import com.google.gson.annotations.SerializedName;
-import com.zicure.company.com.model.models.AccountUserModel;
+import com.zicure.company.com.model.models.AccountUser;
 import com.zicure.company.com.model.models.ResponseStatement;
 
 import java.util.ArrayList;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class StoreAccount {
     @SerializedName("AccountUser")
-    public AccountUserModel accountUserModel;
+    public AccountUser accountUser;
 
     @SerializedName("option")
     public ArrayList<ResponseStatement.Result> option;

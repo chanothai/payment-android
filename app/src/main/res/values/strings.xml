@@ -51,6 +51,7 @@
     <string name="cancel_th">ยกเลิก</string>
     <string name="login_th">ล็อคอิน</string>
     <string name="domain_code_th">รหัส:</string>
+    <string name="card_amount_th">บัตรคงเหลือ</string>
 
     <style name="confirm_th">ตกลง</style>
 </resources>

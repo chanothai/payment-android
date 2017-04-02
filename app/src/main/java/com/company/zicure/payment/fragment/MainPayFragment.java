@@ -3,6 +3,12 @@ package com.company.zicure.payment.fragment;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -12,17 +18,23 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.adapters.StatementAdapter;
+import com.company.zicure.payment.contents.ContentAdapterCart;
 import com.company.zicure.payment.interfaces.ItemClickListener;
 import com.company.zicure.payment.network.ClientHttp;
 import com.company.zicure.survey.activity.SurveyActivity;
@@ -31,16 +43,11 @@ import com.company.zicure.survey.utilize.ModelCartSurvey;
 
 import com.google.gson.Gson;
 import com.joooonho.SelectableRoundedImageView;
-import com.zicure.company.com.model.models.AccountUserModel;
 import com.zicure.company.com.model.models.RequestTokenModel;
-import com.zicure.company.com.model.models.ResponseStatement;
 import com.zicure.company.com.model.util.FormatCash;
 import com.zicure.company.com.model.util.ModelCart;
+import com.zicure.company.com.model.util.ResizeScreen;
 
-import java.util.ArrayList;
-
-import de.hdodenhof.circleimageview.CircleImageView;
-import gallery.zicure.company.com.gallery.util.ResizeScreen;
 import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
 
 
@@ -49,7 +56,7 @@ import profilemof.zicure.company.com.profilemof.activity.ProfileActivity;
  * Use the {@link MainPayFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class MainPayFragment extends Fragment implements View.OnClickListener{
+public class MainPayFragment extends Fragment implements View.OnClickListener , ViewTreeObserver.OnGlobalLayoutListener{
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -59,10 +66,12 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
     private String account;
     private String token;
 
+    private ViewTreeObserver viewTreeObserver = null;
     //View
     private Button btnPay = null;
     private Button btnReceive = null;
     private RecyclerView listStatement = null;
+    private LinearLayout layoutBtn = null;
 
     private SelectableRoundedImageView circleImageView = null;
     private StatementAdapter statementAdapter = null;
@@ -70,6 +79,8 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
     //Layout
     private RelativeLayout layoutProfile = null;
     private LinearLayout layoutStatement = null;
+
+    private final int DIVIDE_FONT = 8;
 
     public MainPayFragment() {
         // Required empty public constructor
@@ -105,6 +116,7 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
 
         layoutProfile = (RelativeLayout) root.findViewById(R.id.layout_profile);
         layoutStatement = (LinearLayout) root.findViewById(R.id.layout_statement);
+        layoutBtn = (LinearLayout) root.findViewById(R.id.layout_btn_control);
 
         btnPay.setOnClickListener(this);
         btnReceive.setOnClickListener(this);
@@ -117,18 +129,30 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         resizeImgProfile();
-        initialAnimation();
+        setDrawableScale();
+
+        ModelCart.getInstance().setMode("");
         if (savedInstanceState == null){
             if (account != null && token != null){
-                setToken();
-                if (account.equalsIgnoreCase(getString(R.string.account2))){
-                    circleImageView.setImageResource(R.drawable.yajai);
-                }
-                else if (account.equalsIgnoreCase(getString(R.string.account1))){
-                    circleImageView.setImageResource(R.drawable.base);
-                }
+                //make image to owner account;
+                Glide.with(this)
+                        .load(ModelCart.getInstance().getUserInfo().getResult().getCustomer().getImage_path())
+                        .diskCacheStrategy(DiskCacheStrategy.ALL)
+                        .centerCrop()
+                        .into(circleImageView);
+
+                setAdapterStatement();
             }
         }
+    }
+
+    private void setDrawableScale(){
+        viewTreeObserver = layoutBtn.getViewTreeObserver();
+        viewTreeObserver.addOnGlobalLayoutListener(this);
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) layoutBtn.getLayoutParams();
+        params.bottomMargin = circleImageView.getLayoutParams().height / 2;
+        layoutBtn.setLayoutParams(params);
     }
 
     private void initialAnimation() {
@@ -148,13 +172,6 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
         circleImageView.setLayoutParams(params);
     }
 
-    private void setToken(){
-        RequestTokenModel tokenModel = new RequestTokenModel();
-        tokenModel.setAccountNo(account);
-        tokenModel.setToken(token);
-        ClientHttp.getInstance(getActivity()).requestStatement(tokenModel);
-    }
-
     @Override
     public void onClick(View view) {
         Fragment fragment = null;
@@ -163,7 +180,7 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
 
         switch (view.getId()){
             case R.id.btn_pay_cash:
-                ModelCart.getInstance().getModel().accountUserModel.type = getString(R.string.tag_pay);
+                ModelCart.getInstance().getAccountUser().type = getString(R.string.tag_pay);
                 fragment = new PayCashFragment();
                 transaction.replace(R.id.container, fragment,getString(R.string.tagScanQRFragment));
                 transaction.addToBackStack(getString(R.string.tag_pay));
@@ -173,12 +190,14 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
                 ModelCart.getInstance().setMode(getString(R.string.txt_wallet));
                 break;
             case R.id.btn_receive_cash:
-                ModelCart.getInstance().getModel().accountUserModel.type = getString(R.string.tag_receive);
+                ModelCart.getInstance().getAccountUser().type = getString(R.string.tag_receive);
                 fragment = new ReceiveCashFragment();
                 transaction.replace(R.id.container, fragment);
                 transaction.addToBackStack(getString(R.string.tag_receive));
                 transaction.commit();
 
+                //set mode
+                ModelCart.getInstance().setMode(getString(R.string.txt_wallet));
                 break;
             case R.id.img_profile:
                 ((MainActivity)getActivity()).setIntent(ProfileActivity.class, R.anim.anim_slide_in_top, R.anim.anim_slide_out_top);
@@ -186,73 +205,31 @@ public class MainPayFragment extends Fragment implements View.OnClickListener{
         }
     }
 
-    private ArrayList<ResponseStatement.Result> getStatement(){
-        return ModelCart.getInstance().getModel().option;
-    }
-
-    private AccountUserModel getAccount(){
-        return ModelCart.getInstance().getModel().accountUserModel;
-    }
-
-    private QuestionRequest getSurveyRequest(){
-        return ModelCartSurvey.newInstance().getSerialized().questionRequest;
-    }
-
     public void setAdapterStatement(){
-        statementAdapter = new StatementAdapter(getActivity()) {
-            @Override
-            public void onBindViewHolder(StatementHolder holder, final int position) {
-                holder.date.setText(getStatement().get(position).getDateAgo());
-
-
-                holder.setItemOnClickListener(new ItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int rowPosition) {
-                        if (getStatement().get(rowPosition).getSymbol().equalsIgnoreCase("-")){
-                            //initial to request survey
-                            ModelCartSurvey.newInstance().getSerialized().restaurantModel.setName(getString(R.string.head_restaurant) + getStatement().get(rowPosition).getAccountCredit());
-                            getSurveyRequest().setAccount_no(getAccount().accountNo);
-                            getSurveyRequest().setToken(getAccount().token);
-                            getSurveyRequest().setCode("canteen");
-                            getSurveyRequest().setType("transaction");
-                            getSurveyRequest().setRefID(getStatement().get(rowPosition).getTransactionID());
-                            Log.d("SurveyRequest", new Gson().toJson(getSurveyRequest()));
-
-                            ((MainActivity)getActivity()).setIntent(SurveyActivity.class,R.anim.anim_slide_in_left, R.anim.anim_slide_out_left);
-                        }
-                    }
-                });
-
-                if (getStatement().get(position).getSymbol().equalsIgnoreCase("+")){
-                    holder.rating.setVisibility(View.GONE);
-                    holder.cash.setText("+ " + FormatCash.newInstance().setFormatCash(Double.parseDouble(getStatement().get(position).getCredit())) + "฿");
-                    holder.cash.setTextColor(getResources().getColor(R.color.colorBlueStrongNormal));
-                    if (ModelCart.getInstance().getModel().accountUserModel.accountNo.equalsIgnoreCase(getString(R.string.account1))){
-                        holder.imgProfile.setImageResource(R.drawable.yajai);
-                    }
-                    else if (ModelCart.getInstance().getModel().accountUserModel.accountNo.equalsIgnoreCase(getString(R.string.account2))){
-                        holder.imgProfile.setImageResource(R.drawable.base);
-                    }
-                }
-                else if (getStatement().get(position).getSymbol().equalsIgnoreCase("-")){
-                    holder.rating.setVisibility(View.VISIBLE);
-                    holder.rating.setText(R.string.txt_survey);
-                    holder.cash.setText("- " + FormatCash.newInstance().setFormatCash(Double.parseDouble(getStatement().get(position).getDebit())) + "฿");
-                    holder.cash.setTextColor(getResources().getColor(R.color.colorRedNormal));
-                    if (ModelCart.getInstance().getModel().accountUserModel.accountNo.equalsIgnoreCase(getString(R.string.account1))){
-                        holder.imgProfile.setImageResource(R.drawable.yajai);
-                    }
-                    else if (ModelCart.getInstance().getModel().accountUserModel.accountNo.equalsIgnoreCase(getString(R.string.account2))){
-                        holder.imgProfile.setImageResource(R.drawable.base);
-                    }
-                }
-
-            }
-        };
+        ContentAdapterCart adapterCart = new ContentAdapterCart(getActivity());
 
         listStatement.setLayoutManager(new LinearLayoutManager(getActivity()));
-        listStatement.setAdapter(statementAdapter);
+        listStatement.setAdapter(adapterCart.setAdapterStatement(statementAdapter));
         listStatement.setItemAnimator(new DefaultItemAnimator());
         listStatement.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+    }
+
+    @Override
+    public void onGlobalLayout() {
+        try {
+            layoutBtn.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            int width = btnPay.getWidth() / 2;
+            int height = width + 25;
+
+            Drawable imgReceive = getActivity().getDrawable(R.drawable.ic_scan_qrcode);
+            imgReceive.setBounds(0,0,width,height);
+            btnPay.setCompoundDrawables(null, imgReceive, null, null);
+
+            Drawable imgPay = getActivity().getDrawable(R.drawable.ic_receive_qrcode);
+            imgPay.setBounds(0,0,width,height);
+            btnReceive.setCompoundDrawables(null, imgPay, null,null);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
     }
 }

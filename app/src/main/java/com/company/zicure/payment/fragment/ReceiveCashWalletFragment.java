@@ -2,35 +2,28 @@ package com.company.zicure.payment.fragment;
 
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.company.zicure.payment.R;
 import com.company.zicure.payment.activity.MainActivity;
 import com.company.zicure.payment.network.ClientHttp;
-import com.joooonho.SelectableRoundedImageView;
 import com.zicure.company.com.model.util.ModelCart;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import gallery.zicure.company.com.gallery.util.ResizeScreen;
 
 /**
@@ -149,8 +142,8 @@ public class ReceiveCashWalletFragment extends Fragment implements View.OnFocusC
             if (!inputCash.getText().toString().trim().isEmpty()){
                 ((MainActivity)getActivity()).showLoadingDialog();
                 ModelCart.getInstance().setMode(getString(R.string.txt_wallet));
-                ModelCart.getInstance().getModel().accountUserModel.amount = Double.parseDouble(inputCash.getText().toString().trim());
-                ClientHttp.getInstance(getActivity()).requestPay(ModelCart.getInstance().getModel().accountUserModel);
+                ModelCart.getInstance().getAccountUser().amount = inputCash.getText().toString().trim();
+                ClientHttp.getInstance(getActivity()).requestPay(ModelCart.getInstance().getAccountUser());
                 closeKeyBoard();
             }
         }

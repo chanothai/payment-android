@@ -15,7 +15,7 @@
         android:required="true" />
 
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
         android:icon="@drawable/logo_mof"
         android:label="@string/app_name"
         android:supportsRtl="true"

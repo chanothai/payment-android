@@ -1,11 +1,11 @@
 package com.zicure.company.com.model.util;
 
-import com.zicure.company.com.model.models.AccountUserModel;
-import com.zicure.company.com.model.models.ResponseStatement;
+import com.zicure.company.com.model.models.ResponseProfile;
+import com.zicure.company.com.model.models.ResponseQRCode;
+import com.zicure.company.com.model.models.ResponseScanQR;
+import com.zicure.company.com.model.models.ResponseTokenModel;
 import com.zicure.company.com.model.models.ResponseUserCode;
-import com.zicure.company.com.model.store.StoreAccount;
-
-import java.util.ArrayList;
+import com.zicure.company.com.model.models.AccountUser;
 
 /**
  * Created by 4GRYZ52 on 2/1/2017.
@@ -13,14 +13,20 @@ import java.util.ArrayList;
 
 public class ModelCart {
     private static ModelCart me = null;
-    private StoreAccount storeAccount = null;
     private String mode;
     private ResponseUserCode deviceToken = null;
+    private ResponseProfile responseProfile = null;
+    private ResponseTokenModel responseTokenModel = null;
+    private AccountUser accountUser = null;
+    private ResponseQRCode responseQRCode = null;
+    private ResponseScanQR responseScanQR = null;
 
-    private ModelCart() {
-        storeAccount = new StoreAccount();
-        storeAccount.accountUserModel = new AccountUserModel();
-        storeAccount.option = new ArrayList<ResponseStatement.Result>();
+    public ModelCart() {
+        responseTokenModel = new ResponseTokenModel();
+        responseProfile = new ResponseProfile();
+        responseQRCode = new ResponseQRCode();
+        responseScanQR = new ResponseScanQR();
+        accountUser = new AccountUser();
         mode = "";
 
         deviceToken = new ResponseUserCode();
@@ -34,8 +40,23 @@ public class ModelCart {
         return me;
     }
 
-    public StoreAccount getModel(){
-        return storeAccount;
+    public ResponseScanQR getResponseScanQR(){
+        return responseScanQR;
+    }
+    public ResponseProfile getUserInfo(){
+        return responseProfile;
+    }
+
+    public ResponseTokenModel getToken(){
+        return responseTokenModel;
+    }
+
+    public ResponseQRCode getQRcode(){
+        return responseQRCode;
+    }
+
+    public AccountUser getAccountUser(){
+        return accountUser;
     }
 
     public String getMode() {

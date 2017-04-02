@@ -40,6 +40,7 @@ public class PayResultFragment extends Fragment implements View.OnClickListener{
     private TextView txtResult = null;
     private TextView payAmount = null;
     private TextView dateTime = null;
+    private TextView amountCard = null;
     private Button btnComplete = null;
 
     public PayResultFragment() {
@@ -82,6 +83,7 @@ public class PayResultFragment extends Fragment implements View.OnClickListener{
         payAmount = (TextView) root.findViewById(R.id.amount_pay);
         btnComplete = (Button) root.findViewById(R.id.btn_complete);
         txtResult = (TextView) root.findViewById(R.id.txt_result);
+        amountCard = (TextView) root.findViewById(R.id.txt_amount_qrcard);
         return root;
     }
 
@@ -90,14 +92,25 @@ public class PayResultFragment extends Fragment implements View.OnClickListener{
         super.onActivityCreated(savedInstanceState);
         btnComplete.setOnClickListener(this);
         if (savedInstanceState == null){
-            ((MainActivity)getActivity()).setBalance();
-
             setTextResult();
             setDateTime();
             if (!status.isEmpty()){
-                String strCash = cash;
-                double resultCash = Double.parseDouble(strCash);
-                payAmount.setText(FormatCash.newInstance().setFormatCash(resultCash) + getString(R.string.cash_thai));
+                try{
+                    if (ModelCart.getInstance().getResponseScanQR().getResult().getBalanceDebit() != null){
+                        if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_qrcard))){
+                            String currentCash = getString(R.string.card_amount_th) + " " + ModelCart.getInstance().getResponseScanQR().getResult().getBalanceDebit()
+                                    + " " + getString(R.string.cash_thai);
+                            amountCard.setText(currentCash);
+                            amountCard.setVisibility(View.VISIBLE);
+                        }
+                    }
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                    amountCard.setVisibility(View.GONE);
+                }
+
+                String resultAmount = cash + getString(R.string.cash_thai);
+                payAmount.setText(resultAmount);
             }
         }
     }
@@ -110,10 +123,10 @@ public class PayResultFragment extends Fragment implements View.OnClickListener{
     }
 
     private void setTextResult(){
-        if (ModelCart.getInstance().getModel().accountUserModel.type.equalsIgnoreCase("receive")){
+        if (ModelCart.getInstance().getAccountUser().type.equalsIgnoreCase("receive")){
             txtResult.setText(getString(R.string.receive_complete));
         }
-        else if (ModelCart.getInstance().getModel().accountUserModel.type.equalsIgnoreCase("pay")){
+        else if (ModelCart.getInstance().getAccountUser().type.equalsIgnoreCase("pay")){
             txtResult.setText(getString(R.string.pay_complete));
         }
     }
@@ -123,6 +136,6 @@ public class PayResultFragment extends Fragment implements View.OnClickListener{
         FragmentManager fm = getActivity().getSupportFragmentManager();
         fm.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
 
-        ((MainActivity)getActivity()).callMainPayFragment();
+        ((MainActivity)getActivity()).callUserInfo();
     }
 }

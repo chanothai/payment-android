@@ -134,15 +134,21 @@ public class PayCashFragment extends Fragment implements ZXingScannerView.Result
     public void handleResult(Result result) {
         if (!result.getText().trim().isEmpty() && result.getText() != null){
             String[] value = result.getText().split(",");
+            Log.d("Scan", result.getText());
             if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_wallet))){
-                Toast.makeText(getActivity(), value[0] + ", " + value[1], Toast.LENGTH_SHORT).show();
-                createDialog(value[0], value[1]);
-                dialog.show();
+                if (value.length == 2){
+                    Toast.makeText(getActivity(), value[0] + ", " + value[1], Toast.LENGTH_SHORT).show();
+                    createDialog(value[0], value[1]);
+                    dialog.show();
+                }else{
+                    Toast.makeText(getActivity(), "QR CODE incorrect", Toast.LENGTH_SHORT).show();
+                    ((MainActivity)getActivity()).callCamera();
+                }
             }
             else if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_qrcard))){
-                ModelCart.getInstance().getModel().accountUserModel.accountNo = value[0];
+                ModelCart.getInstance().getAccountUser().accountNo = value[0];
                 ((MainActivity)getActivity()).showLoadingDialog();
-                ClientHttp.getInstance(getActivity()).requestScanQR(ModelCart.getInstance().getModel().accountUserModel);
+                ClientHttp.getInstance(getActivity()).requestScanQR(ModelCart.getInstance().getAccountUser());
             }
         }
     }
@@ -177,10 +183,10 @@ public class PayCashFragment extends Fragment implements ZXingScannerView.Result
         }
         if (view.getId() == R.id.btn_confirm){
             dialog.cancel();
-            ModelCart.getInstance().getModel().accountUserModel.code = currentReceiver;
-            ModelCart.getInstance().getModel().accountUserModel.amount = Double.parseDouble(currentCash);
+            ModelCart.getInstance().getAccountUser().code = currentReceiver;
+            ModelCart.getInstance().getAccountUser().amount = currentCash;
             ((MainActivity)getActivity()).showLoadingDialog();
-            ClientHttp.getInstance(getActivity()).requestScanQR(ModelCart.getInstance().getModel().accountUserModel);
+            ClientHttp.getInstance(getActivity()).requestScanQR(ModelCart.getInstance().getAccountUser());
         }
     }
 }

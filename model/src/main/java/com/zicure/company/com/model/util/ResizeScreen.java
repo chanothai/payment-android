@@ -1,7 +1,9 @@
 package com.zicure.company.com.model.util;
 
 import android.app.Activity;
+import android.graphics.Point;
 import android.util.DisplayMetrics;
+import android.view.Display;
 
 /**
  * Created by 4GRYZ52 on 3/14/2017.
@@ -13,8 +15,8 @@ public class ResizeScreen {
     public ResizeScreen(Activity activity){
         metrics = new DisplayMetrics();
         activity.getWindowManager().getDefaultDisplay().getMetrics(metrics);
-    }
 
+    }
 
     public int heightScreen(int originalHeight){
         return metrics.heightPixels / originalHeight;

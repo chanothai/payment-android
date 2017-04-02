@@ -13,6 +13,8 @@ import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.WriterException;
@@ -107,7 +109,7 @@ public class AddCashFragment extends Fragment{
         if (multiFormatWriter == null){
             multiFormatWriter = new MultiFormatWriter();
             try{
-                BitMatrix bitMatrix = multiFormatWriter.encode(ModelCart.getInstance().getModel().accountUserModel.accountNo, BarcodeFormat.QR_CODE, width, height);
+                BitMatrix bitMatrix = multiFormatWriter.encode(ModelCart.getInstance().getToken().getResult().getToken(), BarcodeFormat.QR_CODE, width, height);
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                 imgQrCode.setImageBitmap(bitmap);

@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.company.zicure.payment.R;
-import com.company.zicure.payment.common.BaseActivity;
 import com.company.zicure.payment.network.ClientHttp;
+import com.zicure.company.com.model.common.BaseActivity;
 import com.zicure.company.com.model.models.RequestRegister;
 import com.zicure.company.com.model.models.ResponseRegister;
 import com.zicure.company.com.model.models.ResponseUserCode;
@@ -38,7 +38,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private String authToken = null;
     private Dialog dialog = null;
 
-    private Button btnCancel = null;
     private Button btnConfirm = null;
     private TextView txtCode = null;
     private ImageView img = null;
@@ -73,7 +72,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void storeAuthToken(String authToken){
-        if (authToken != null){
+        if (authToken != null && !authToken.isEmpty()){
             pref = getSharedPreferences(VarialableConnect.fileKey , Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = pref.edit();
             editor.putString(VarialableConnect.authTokenKey, authToken);
@@ -82,7 +81,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
         checkAuthToken();
     }
-
 
     @Override
     protected void onResume() {
@@ -94,18 +92,16 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         Intent intent = getIntent();
         String authToken = intent.getStringExtra(Intent.EXTRA_TEXT);
         storeAuthToken(authToken);
-        Toast.makeText(this, authToken, Toast.LENGTH_SHORT).show();
     }
 
     private void bindView(){
-        btnCancel = (Button)findViewById(R.id.btn_cancel);
         btnConfirm = (Button)findViewById(R.id.btn_active);
-        btnCancel.setOnClickListener(this);
         btnConfirm.setOnClickListener(this);
 
         txtCode = (TextView)findViewById(R.id.show_auth_code);
 
         img = (ImageView)findViewById(R.id.img_mof_pay);
+        img.setImageResource(R.drawable.logo_mof);
         resizeImage();
     }
 
@@ -134,7 +130,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         authToken = pref.getString(VarialableConnect.authTokenKey, null);
 
         if (authToken == null){
-            img.setImageResource(R.drawable.logo_mof);
             showLoadingDialog();
             ClientHttp.getInstance(this).requestUserCode(VarialableConnect.clientID);
         }else{
@@ -148,6 +143,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
         if (account != null){
             Bundle bundle = new Bundle();
+            bundle.putString(VarialableConnect.clearStack,"clear");
             bundle.putString(VarialableConnect.accountKey, account);
             openActivity(MainActivity.class, bundle, true);
         }else{
@@ -185,17 +181,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     @Subscribe
     public void onEventRegister(ResponseRegister response){
-        if (response.getResult().getCode().equalsIgnoreCase("SUCCESS")){
-            storeAccount(response.getResult().getAccount_no());
-            dismissDialog();
-        }else{
-            Toast.makeText(this, response.getResult().getDescription(), Toast.LENGTH_SHORT).show();
-            SharedPreferences.Editor editor = pref.edit();
-            editor.clear();
-            editor.commit();
+        try {
+            if (response.getResult().getCode().equalsIgnoreCase("SUCCESS")){
+                storeAccount(response.getResult().getAccount_no());
+                dismissDialog();
+            }else{
+                Toast.makeText(this, response.getResult().getDescription(), Toast.LENGTH_SHORT).show();
+                SharedPreferences.Editor editor = pref.edit();
+                editor.clear();
+                editor.commit();
 
-            showLoadingDialog();
-            ClientHttp.getInstance(this).requestUserCode(VarialableConnect.clientID);
+                showLoadingDialog();
+                ClientHttp.getInstance(this).requestUserCode(VarialableConnect.clientID);
+            }
+        }catch (NullPointerException e){
+            e.printStackTrace();
         }
     }
 

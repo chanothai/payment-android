@@ -1,13 +1,13 @@
 package com.company.zicure.payment.interfaces;
 
-import com.zicure.company.com.model.models.AccountUserModel;
+import com.zicure.company.com.model.models.AccountUser;
 import com.zicure.company.com.model.models.RequestRegister;
 import com.zicure.company.com.model.models.RequestTokenModel;
 import com.zicure.company.com.model.models.ResponseBalance;
+import com.zicure.company.com.model.models.ResponseProfile;
 import com.zicure.company.com.model.models.ResponseQRCode;
 import com.zicure.company.com.model.models.ResponseRegister;
 import com.zicure.company.com.model.models.ResponseScanQR;
-import com.zicure.company.com.model.models.ResponseStatement;
 import com.zicure.company.com.model.models.ResponseTokenModel;
 import com.zicure.company.com.model.models.ResponseUserCode;
 
@@ -24,24 +24,24 @@ import retrofit2.http.QueryMap;
  */
 
 public interface LogApi {
-    @POST("e-money-client/Accounts/statement")
-    Call<ResponseStatement> requestStatement(@Body RequestTokenModel requestTokenModel);
+    @POST("e-money-client/Accounts/profile")
+    Call<ResponseProfile> requestUserInfo(@Body RequestTokenModel requestTokenModel);
 
     @POST("e-money-client/Accounts/token")
     Call<ResponseTokenModel> cmRequestToken(@Body RequestTokenModel requestTokenModel);
 
     @POST("e-money-client/Sellers/QRcode")
-    Call<ResponseQRCode> requestPay(@Body AccountUserModel accountUserModel);
+    Call<ResponseQRCode> requestPay(@Body AccountUser accountUser);
 
     @POST("e-money-client/Buyers/QRcode")
-    Call<ResponseScanQR> requestScanQR(@Body AccountUserModel accountUserModel);
-
-    @POST("e-money-client/Accounts/balance")
-    Call<ResponseBalance> requestBalance(@Body RequestTokenModel requestTokenModel);
+    Call<ResponseScanQR> requestScanQR(@Body AccountUser accountUser);
 
     @GET("Api/getDeviceToken.json")
     Call<ResponseUserCode> genUserCode(@QueryMap Map<String, String> ClientID);
 
     @POST("e-money-client/Registers")
     Call<ResponseRegister> requestAccount(@Body RequestRegister requestRegister);
+
+    @POST("e-money-client/Accounts/balance")
+    Call<ResponseBalance> requestBalance(@Body RequestTokenModel requestTokenModel);
 }

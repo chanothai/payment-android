@@ -13,15 +13,25 @@
         android:layout_centerInParent="true"
         android:orientation="horizontal">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="horizontal">
             <include
                 android:layout_width="@dimen/size_image_circle_small"
                 android:layout_height="@dimen/size_image_circle_small"
                 layout="@layout/content_circle_image" />
-        </FrameLayout>
+
+            <TextView
+                android:id="@+id/first_name_statement"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/padding_medium"
+                android:text="Hello"
+                android:layout_gravity="center"
+                android:textSize="@dimen/size_text_small"/>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

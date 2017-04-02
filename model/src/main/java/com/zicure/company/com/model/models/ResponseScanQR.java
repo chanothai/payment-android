@@ -25,6 +25,8 @@ public class ResponseScanQR {
         private String code;
         @SerializedName("description")
         private String description;
+        @SerializedName("balance_debit")
+        private String balanceDebit;
 
         public String getTransactionRef() {
             return transactionRef;
@@ -48,6 +50,14 @@ public class ResponseScanQR {
 
         public void setDescription(String description) {
             this.description = description;
+        }
+
+        public String getBalanceDebit() {
+            return balanceDebit;
+        }
+
+        public void setBalanceDebit(String balanceDebit) {
+            this.balanceDebit = balanceDebit;
         }
     }
 

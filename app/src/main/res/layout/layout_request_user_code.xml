@@ -51,23 +51,10 @@
         android:gravity="bottom">
 
         <Button
-            android:id="@+id/btn_cancel"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/cancel_th"
-            android:layout_weight="1"
-            android:textSize="@dimen/size_text_medium"
-            android:padding="@dimen/padding_small"
-            android:background="@drawable/select_btn_menu_news"
-            android:layout_marginEnd="@dimen/padding_small"/>
-
-        <Button
             android:id="@+id/btn_active"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/btn_confirm_th"
-            android:layout_weight="1"
-            android:layout_marginStart="@dimen/padding_small"
             android:background="@drawable/select_btn_blue_strong"
             android:textSize="@dimen/size_text_medium"
             android:textColor="@android:color/white"

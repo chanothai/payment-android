@@ -36,7 +36,7 @@ abstract public class StatementAdapter extends RecyclerView.Adapter<StatementAda
 
     @Override
     public int getItemCount() {
-        return ModelCart.getInstance().getModel().option.size();
+        return ModelCart.getInstance().getUserInfo().getResult().getTransaction().size();
     }
 
     public class StatementHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -45,6 +45,7 @@ abstract public class StatementAdapter extends RecyclerView.Adapter<StatementAda
         public TextView date;
         public TextView cash;
         public TextView rating;
+        public TextView name;
         public SelectableRoundedImageView imgProfile;
 
         public ItemClickListener itemClickListener;
@@ -55,6 +56,7 @@ abstract public class StatementAdapter extends RecyclerView.Adapter<StatementAda
             cash = (TextView) itemView.findViewById(R.id.statement_cash);
             rating = (TextView) itemView.findViewById(R.id.statement_point);
             imgProfile = (SelectableRoundedImageView) itemView.findViewById(R.id.img_profile);
+            name = (TextView) itemView.findViewById(R.id.first_name_statement);
 
             itemView.setClickable(true);
             itemView.setOnClickListener(this);
