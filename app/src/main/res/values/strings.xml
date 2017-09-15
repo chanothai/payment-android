@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MOF PAY</string>
+    <string name="app_name">Payment</string>
 
     //Form text pay
     <string name="balance">เหลือ</string>
@@ -33,9 +33,9 @@
     <string name="txt_survey">ให้คะแนน ></string>
     <string name="head_restaurant">"ร้าน "</string>
     <string name="btn_cancel_th">ยกเลิก</string>
-    <string name="content_scan_th">สแกน QR ของ MOF PAY ที่ต้องการชำระเงิน</string>
+    <string name="content_scan_th">สแกน QR ของ Payment ที่ต้องการชำระเงิน</string>
     <string name="content_receive_cash_th">รับเงินระหว่างบัญชี Wallet</string>
-    <string name="content_dialog_th">คุณต้องการชำระเงินผ่าน MOF PAY?</string>
+    <string name="content_dialog_th">คุณต้องการชำระเงินผ่าน Payment?</string>
     <string name="receive_cash_qrcard_th">รับเงินผ่าน QR Card</string>
     <string name="txt_wallet">Wallet</string>
     <string name="txt_qrcard">QR Card</string>
@@ -47,7 +47,7 @@
 
 
     //Login
-    <string name="message_get_userinfo_th">MOF PAY APPLICATION : จะขอรับข้อมูลส่วนตัวจาก CONNECT APPLICATION โดยท่านจะได้รับรหัสผ่าน เพื่อใช้ยืนยันการล็อคอิน</string>
+    <string name="message_get_userinfo_th">PAYMENY APPLICATION : จะขอรับข้อมูลส่วนตัวจาก CONNECT APPLICATION โดยท่านจะได้รับรหัสผ่าน เพื่อใช้ยืนยันการล็อคอิน</string>
     <string name="cancel_th">ยกเลิก</string>
     <string name="login_th">ล็อคอิน</string>
     <string name="domain_code_th">รหัส:</string>

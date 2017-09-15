@@ -10,6 +10,7 @@ import com.zicure.company.com.model.models.ResponseRegister;
 import com.zicure.company.com.model.models.ResponseScanQR;
 import com.zicure.company.com.model.models.ResponseTokenModel;
 import com.zicure.company.com.model.models.ResponseUserCode;
+import com.zicure.company.com.model.models.verify.ResponseVerifyApp;
 
 import java.util.Map;
 

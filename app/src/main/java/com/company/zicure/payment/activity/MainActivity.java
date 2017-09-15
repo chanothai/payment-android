@@ -53,8 +53,6 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     Toolbar toolbarMenu;
     @Bind(R.id.title_toolbar)
     TextView titleToolbar;
-    @Bind(R.id.title_logo)
-    ImageView titleLogo;
 
     //Refresh
     @Bind(R.id.refresh_main)
@@ -66,6 +64,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     private double amount;
     private String accountUser;
     private String clearStack = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -138,7 +138,7 @@ public class PayCashFragment extends Fragment implements ZXingScannerView.Result
             if (ModelCart.getInstance().getMode().equalsIgnoreCase(getString(R.string.txt_wallet))){
                 if (value.length == 2){
                     Toast.makeText(getActivity(), value[0] + ", " + value[1], Toast.LENGTH_SHORT).show();
-                    createDialog(value[0], value[1]);
+                    createDialog(value[1], value[0]);
                     dialog.show();
                 }else{
                     Toast.makeText(getActivity(), "QR CODE incorrect", Toast.LENGTH_SHORT).show();

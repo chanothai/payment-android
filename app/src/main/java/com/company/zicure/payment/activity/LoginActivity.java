@@ -52,8 +52,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     TextView titleToolbar;
     @Bind(R.id.appbarLayout)
     AppBarLayout appBarLayout;
-    @Bind(R.id.title_logo)
-    ImageView titleLogo;
 
     private SharedPreferences pref = null;
 
@@ -71,15 +69,26 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         }
     }
 
-    private void storeAuthToken(String authToken){
-        if (authToken != null && !authToken.isEmpty()){
-            pref = getSharedPreferences(VarialableConnect.fileKey , Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor = pref.edit();
-            editor.putString(VarialableConnect.authTokenKey, authToken);
-            editor.commit();
-        }
+    private void bindView(){
+        btnConfirm = (Button)findViewById(R.id.btn_active);
+        btnConfirm.setOnClickListener(this);
 
-        checkAuthToken();
+        txtCode = (TextView)findViewById(R.id.show_auth_code);
+
+        img = (ImageView)findViewById(R.id.img_mof_pay);
+        img.setImageResource(R.drawable.logo_mof);
+        resizeImage();
+    }
+
+    private void setToolbar(){
+        ToolbarManager toolbarManager = new ToolbarManager(this);
+        toolbarManager.setToolbar(toolbar, titleToolbar, getString(R.string.login_th));
+        toolbarManager.setAppbarLayout(appBarLayout);
+        setMarginLayout();
+    }
+
+    private void setMarginLayout(){
+        messageLayout.setPadding(0,0,0,btnLayout.getLayoutParams().height);
     }
 
     @Override
@@ -94,15 +103,15 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         storeAuthToken(authToken);
     }
 
-    private void bindView(){
-        btnConfirm = (Button)findViewById(R.id.btn_active);
-        btnConfirm.setOnClickListener(this);
+    private void storeAuthToken(String authToken){
+        if (authToken != null && !authToken.isEmpty()){
+            pref = getSharedPreferences(VarialableConnect.fileKey , Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = pref.edit();
+            editor.putString(VarialableConnect.authTokenKey, authToken);
+            editor.apply();
+        }
 
-        txtCode = (TextView)findViewById(R.id.show_auth_code);
-
-        img = (ImageView)findViewById(R.id.img_mof_pay);
-        img.setImageResource(R.drawable.logo_mof);
-        resizeImage();
+        checkAuthToken();
     }
 
     private void resizeImage(){
@@ -111,18 +120,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         params.height = screen.widthScreen(5);
         params.width = screen.widthScreen(5);
         img.setLayoutParams(params);
-    }
-
-    private void setToolbar(){
-        ToolbarManager toolbarManager = new ToolbarManager(this);
-        toolbarManager.setToolbar(toolbar, titleToolbar, getString(R.string.login_th));
-        toolbarManager.setAppbarLayout(appBarLayout);
-        titleLogo.setVisibility(View.INVISIBLE);
-        setMarginLayout();
-    }
-
-    private void setMarginLayout(){
-        messageLayout.setPadding(0,0,0,btnLayout.getLayoutParams().height);
     }
 
     private void checkAuthToken(){
@@ -176,20 +173,21 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(VarialableConnect.authCodeKey, authCode);
         editor.putString(VarialableConnect.expireCodeKey, expireCode);
-        editor.commit();
+        editor.apply();
     }
 
     @Subscribe
     public void onEventRegister(ResponseRegister response){
         try {
             if (response.getResult().getCode().equalsIgnoreCase("SUCCESS")){
+                Toast.makeText(this, response.getResult().getAccount_no(), Toast.LENGTH_SHORT).show();
                 storeAccount(response.getResult().getAccount_no());
                 dismissDialog();
             }else{
                 Toast.makeText(this, response.getResult().getDescription(), Toast.LENGTH_SHORT).show();
                 SharedPreferences.Editor editor = pref.edit();
                 editor.clear();
-                editor.commit();
+                editor.apply();
 
                 showLoadingDialog();
                 ClientHttp.getInstance(this).requestUserCode(VarialableConnect.clientID);
@@ -202,7 +200,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void storeAccount(String account){
         SharedPreferences.Editor editor = pref.edit();
         editor.putString(VarialableConnect.accountKey, account);
-        editor.commit();
+        editor.apply();
 
         Bundle bundle = new Bundle();
         bundle.putString(VarialableConnect.accountKey, account);

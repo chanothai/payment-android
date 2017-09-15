@@ -109,7 +109,7 @@ public class AddCashFragment extends Fragment{
         if (multiFormatWriter == null){
             multiFormatWriter = new MultiFormatWriter();
             try{
-                BitMatrix bitMatrix = multiFormatWriter.encode(ModelCart.getInstance().getToken().getResult().getToken(), BarcodeFormat.QR_CODE, width, height);
+                BitMatrix bitMatrix = multiFormatWriter.encode(ModelCart.getInstance().getToken().getResult().getAccountNo(), BarcodeFormat.QR_CODE, width, height);
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                 Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                 imgQrCode.setImageBitmap(bitmap);

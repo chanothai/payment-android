@@ -22,14 +22,6 @@
             android:gravity="center"
             android:textSize="28sp"
             android:textStyle="bold" />
-        
-        <ImageView
-            android:id="@+id/title_logo"
-            android:layout_width="72dp"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:layout_marginBottom="4dp"
-            android:layout_gravity="end|center"
-            android:src="@drawable/logo_mof"/>
+
     </android.support.v7.widget.Toolbar>
 </android.support.design.widget.AppBarLayout>

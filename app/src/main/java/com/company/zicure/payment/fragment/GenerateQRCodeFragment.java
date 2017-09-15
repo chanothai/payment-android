@@ -136,7 +136,7 @@ public class GenerateQRCodeFragment extends Fragment implements View.OnClickList
     private void generateQRCode(int width, int height){
         if (multiFormatWriter == null){
             multiFormatWriter = new MultiFormatWriter();
-            String strQR = code + "," + cash;
+            String strQR = cash + "," + code;
             try{
                 BitMatrix bitMatrix = multiFormatWriter.encode(strQR, BarcodeFormat.QR_CODE, width, height);
                 BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
