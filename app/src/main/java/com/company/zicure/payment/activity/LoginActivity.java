@@ -98,9 +98,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void initial(){
-        Intent intent = getIntent();
-        String authToken = intent.getStringExtra(Intent.EXTRA_TEXT);
-        storeAuthToken(authToken);
+//        Intent intent = getIntent();
+//        String authToken = intent.getStringExtra(Intent.EXTRA_TEXT);
+//        storeAuthToken(authToken);
+        storeAccount("201799990001030047");
     }
 
     private void storeAuthToken(String authToken){

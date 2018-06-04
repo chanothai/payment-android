@@ -21,4 +21,6 @@ public class AccountUser {
     public String balance = null;
     @SerializedName("card_code")
     public String cardCode;
+    @SerializedName("currency")
+    public String currency;
 }

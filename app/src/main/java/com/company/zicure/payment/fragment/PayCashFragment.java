@@ -98,6 +98,7 @@ public class PayCashFragment extends Fragment implements ZXingScannerView.Result
         if (savedInstanceState == null){
             PermissionRequest.newInstance(getActivity()).requestCamera();
             qrScanner();
+            ModelCart.getInstance().getAccountUser().currency = "THB";
         }
     }
 

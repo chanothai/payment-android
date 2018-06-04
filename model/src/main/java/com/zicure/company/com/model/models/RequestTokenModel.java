@@ -11,6 +11,8 @@ public class RequestTokenModel {
     private String accountNo;
     @SerializedName("token")
     private String token;
+    @SerializedName("currency")
+    private String currency;
 
     public String getAccountNo() {
         return accountNo;
@@ -26,5 +28,13 @@ public class RequestTokenModel {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public String getCurrency() {
+        return currency;
+    }
+
+    public void setCurrency(String currency) {
+        this.currency = currency;
     }
 }

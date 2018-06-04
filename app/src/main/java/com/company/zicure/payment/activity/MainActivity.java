@@ -92,6 +92,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
         RequestTokenModel tokenModel = new RequestTokenModel();
         tokenModel.setAccountNo(ModelCart.getInstance().getToken().getResult().getAccountNo());
         tokenModel.setToken(ModelCart.getInstance().getToken().getResult().getToken());
+        tokenModel.setCurrency("THB");
 
         ClientHttp.getInstance(this).requestUserInfo(tokenModel);
     }
@@ -188,6 +189,7 @@ public class MainActivity extends BaseActivity implements SwipeRefreshLayout.OnR
     public void setBalance(){
         RequestTokenModel tokenModel = new RequestTokenModel();
         tokenModel.setAccountNo(accountUser);
+        tokenModel.setCurrency("THB");
         tokenModel.setToken(ModelCart.getInstance().getAccountUser().token);
 
         if (ModelCart.getInstance().getAccountUser().balance != null){

@@ -157,7 +157,7 @@ public class GenerateQRCodeFragment extends Fragment implements View.OnClickList
 
     @Override
     public void onClick(View view) {
-        ((MainActivity)getActivity()).showLoadingDialog();
-        ((MainActivity)getActivity()).setBalance();
+//        ((MainActivity)getActivity()).showLoadingDialog();
+//        ((MainActivity)getActivity()).setBalance();
     }
 }
